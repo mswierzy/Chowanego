@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.markus_swierzy.chowanego.MainActivity">
+    <TableLayout>
+        <TableRow>
+            <Button
+                android:text="@string/txtLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Login"
+                android:ems="10"
+                android:id="@+id/edConnectLogin" />
+        </TableRow>
+    </TableLayout>
+    <TableLayout>
+        <TableRow>
+            <Button
+                android:text="@string/txtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Game"
+                android:ems="10"
+                android:id="@+id/edConnectGame" />
+        </TableRow>
+    </TableLayout>
+   <LinearLayout android:weightSum="1">
+        <ListView
+            android:layout_height="300sp"
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_weight="1">
+        </ListView>
+   </LinearLayout>
+        <Button
+            android:text="@string/txtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+</TableLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/splashScreenImage"
+        android:src="@drawable/opening"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/creditsText"
+        android:text="autor: BSSW"
+        android:layout_gravity="center_horizontal|bottom">
+    </TextView>
+</FrameLayout>

@@ -1,0 +1,24 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TableLayout>
+        <TextView
+            android:text="@string/txtCatched"
+            android:gravity="center"/>
+        <TableRow>
+            <Button
+                android:text="@string/txtCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnGameCatchedNo" />
+            <Button
+                android:text="@string/txtPlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnGameCatchedYes" />
+        </TableRow>
+    </TableLayout>
+
+
+</TableLayout>

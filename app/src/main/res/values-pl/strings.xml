@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Podchody</string>
+    <string name="txtBtnStart">Dołącz</string>
+    <string name="txtBtnCreate">Stwórz grę</string>
+    <string name="txtBtnInfo">Info</string>
+    <string name="txtBtnExit">Wyjście</string>
+    <string name="txtPressExit">Kliknij dtugi raz żeby wyjść</string>
+    <string name="txtLogin">Login</string>
+    <string name="txtSearch">Szukaj</string>
+    <string name="txtPlay">Graj</string>
+    <string name="txtConnectDialogPassword">Hasło</string>
+    <string name="txtCancel">Anuluj</string>
+    <string name="txtCatched">Złapany</string>
+    <string name="txtGameName">Nazwa Gry</string>
+    <string name="txtPassword">Hasło</string>
+    <string name="txtSearchTime">Czas szukania</string>
+    <string name="txtHideTime">Czas chowania</string>
+    <string name="txtSet">Ustaw</string>
+</resources>

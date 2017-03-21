@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.markus_swierzy.chowanego.MainActivity">
+    <TableLayout>
+        <Button
+            android:text="@string/txtBtnStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/btnStart" />
+    </TableLayout>
+    <TableLayout>
+        <Button
+            android:text="@string/txtBtnCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnPlay"
+            android:gravity="center"
+            android:id="@+id/btnCreate" />
+    </TableLayout>
+    <TableLayout>
+        <Button
+            android:text="@string/txtBtnInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCreate"
+            android:gravity="center"
+            android:id="@+id/btnInfo" />
+    </TableLayout>
+    <TableLayout>
+        <Button
+            android:text="@string/txtBtnExit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnInfo"
+            android:gravity="center"
+            android:id="@+id/btnExit" />
+    </TableLayout>
+</TableLayout>
+
+

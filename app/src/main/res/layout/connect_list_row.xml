@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tabConnectRow"
+        android:gravity="left">
+        <RadioButton
+            android:id="@+id/btnConnect"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Game Name"
+            android:gravity="center"
+            android:id="@+id/txtNameConnectRow"
+            android:padding="3dip" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Players"
+            android:id="@+id/txtPlayersConnectRow"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+</TableLayout>
