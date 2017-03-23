@@ -24,6 +24,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private String strGameName = "";
     private String strLogin = "";
     private int nGameID = -1;
+    private int nLoginID = -1;
 
     /*
         Zmienne timera
@@ -57,6 +58,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         strGameName = getIntent().getStringExtra("GameName");
         nGameID = getIntent().getIntExtra("GameID",-1);
         strLogin = getIntent().getStringExtra("Login");
+        nLoginID = getIntent().getIntExtra("LoginID",-1);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
@@ -85,7 +87,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 args.putInt("GameID", nGameID);
                 args.putString("GameName", strGameName);
                 dialogFragment.setArguments(args);
-                dialogFragment.show(fm, "Sample Fragment");
+                dialogFragment.show(fm, "Catched");
             }
         });
     }
@@ -105,6 +107,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         args.putInt("GameID", nGameID);
         args.putString("GameName", strGameName);
         args.putString("Login", strLogin);
+        args.putInt("LoginID", nLoginID);
         dialogFragment.setArguments(args);
         dialogFragment.show(fm, "Quit Game");
     }
@@ -119,6 +122,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         args.putInt("GameID", nGameID);
         args.putString("GameName", strGameName);
         args.putString("Login", strLogin);
+        args.putInt("LoginID", nLoginID);
         dialogFragment.setArguments(args);
         dialogFragment.show(fm, "End of Time");
     }

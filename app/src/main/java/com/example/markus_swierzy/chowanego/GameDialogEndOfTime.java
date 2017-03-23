@@ -10,38 +10,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by markus_swierzy on 2017-03-19.
+ * Created by markus_swierzy on 2017-03-22.
  */
 
-public class GameCatchedDialog extends DialogFragment {
+public class GameDialogEndOfTime extends DialogFragment {
 
     private String strGameName = "";
     private int nGameID = -1;
     private String strLogin = "";
-    private int nLoginID = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.game_catched_dialog, container, false);
-        getDialog().setTitle("Catched???");
+        getDialog().setTitle("End Of Time!!!");
 
-        Button no = (Button) rootView.findViewById(R.id.btnGameCatchedNo);
+        Button ok = (Button) rootView.findViewById(R.id.btnGameEndOfTimeOk);
 
         strGameName = getArguments().getString("GameName");
         nGameID = getArguments().getInt("GameID",-1);
         strLogin = getArguments().getString("Login");
-        nLoginID = getArguments().getInt("LoginID", -1);
 
-        no.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        Button yes = (Button) rootView.findViewById(R.id.btnGameCatchedYes);
-        yes.setOnClickListener(new View.OnClickListener(){
+        ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Activity activity = getActivity();
@@ -49,7 +38,6 @@ public class GameCatchedDialog extends DialogFragment {
                 i.putExtra("GameName", strGameName);
                 i.putExtra("Login", strLogin);
                 i.putExtra("GameID", nGameID);
-                i.putExtra("LoginID", nLoginID);
                 activity.startActivity(i);
                 activity.finish();
             }
