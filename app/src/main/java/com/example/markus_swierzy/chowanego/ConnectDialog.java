@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 public class ConnectDialog extends DialogFragment {
 
+    private Activity activity;
     String strGameName = "";
     int nGameID = -1;
 
@@ -41,7 +42,7 @@ public class ConnectDialog extends DialogFragment {
         play.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Activity activity = getActivity();
+
                 Intent i = new Intent(activity, Game.class);
                 i.putExtra("GameName", strGameName);
                 i.putExtra("GameID", nGameID);
@@ -52,5 +53,7 @@ public class ConnectDialog extends DialogFragment {
 
         return rootView;
     }
+
+
 
 }

@@ -2,32 +2,144 @@ package com.example.markus_swierzy.chowanego;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class Create extends AppCompatActivity {
+
+    private String strGameName = "";
+    private String strLogin = "";
+    private String strPassword = "";
+    private boolean bIsPassword = false;
+    private int nSearchTime = 30;
+    private int nHideTime = 10;
+
+    public String strOccupiedGameName = "";
+    public String strOccupiedLogin = "";
+
+    Button btnCreate;
+    Button btnGameName;
+    Button btnPassword;
+    Button btnLogin;
+
+    EditText edGameName;
+    EditText edPassword;
+    EditText edLogin;
+    EditText edHideTime;
+    EditText edSearchTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        Button create = (Button) findViewById(R.id.btnCreate);
+        btnCreate = (Button) findViewById(R.id.btnCreate);
+        btnGameName = (Button) findViewById(R.id.btnCreateGameName);
+        btnPassword = (Button) findViewById(R.id.btnCreatePassword);
+        btnLogin = (Button) findViewById(R.id.btnCreateLogin);
 
-        create.setOnClickListener(new View.OnClickListener() {
+        edGameName = (EditText) findViewById(R.id.edCreateGameName);
+        edPassword = (EditText) findViewById(R.id.edCreatePassword);
+        edLogin = (EditText) findViewById(R.id.edCreateLogin);
+        edHideTime = (EditText) findViewById((R.id.edCreateHideTime));
+        edSearchTime = (EditText) findViewById((R.id.edCreateSearchTime));
+
+        //edHideTime.setText(Integer.toString(nHideTime));
+        //edSearchTime.setText(Integer.toString(nSearchTime));
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dolacz do gry!!!!
-                Intent create = new Intent(Create.this, GameSearcher.class);
-                Create.this.startActivity(create);
-                Create.this.finish();
-                overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+                String tmpHide = edHideTime.getText().toString();
+                String tmpSearch = edSearchTime.getText().toString();
 
-                //Intent intent = new Intent(getBaseContext(), ConnectDialog.class);
-                //intent.putExtra("GameName", strGameName);
-                //intent.putExtra("SelectedID", nSelected);
+                if(!tmpHide.isEmpty()){
+                    nHideTime = Integer.parseInt(tmpHide);
+                }
+                if(!tmpSearch.isEmpty()){
+                    nSearchTime = Integer.parseInt(tmpSearch);
+                }
+
+                // Dolacz do gry!!!!
+                if(strGameName.isEmpty()){
+                    toast("Game Name is Empty");
+                }else if(strLogin.isEmpty()){
+                    toast("Login is Empty");
+                }else{
+                    FragmentManager fm = getFragmentManager();
+                    CreateDialog dialogFragment = new CreateDialog ();
+
+                    Bundle args = new Bundle();
+                    args.putString("GameName", strGameName);
+                    args.putString("Login", strLogin);
+                    args.putString("Password", strPassword);
+                    args.putInt("SearchTime", nSearchTime);
+                    args.putInt("HideTime", nHideTime);
+                    args.putBoolean("IsPassword", bIsPassword);
+                    dialogFragment.setArguments(args);
+
+                    dialogFragment.show(fm, "Create");
+                }
+            }
+        });
+
+        btnGameName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tmpGameName = edGameName.getText().toString();
+
+                if(tmpGameName.isEmpty()){
+                    toast("Game Name is empty");
+                    strGameName = "";
+                }else if(tmpGameName.equals(strOccupiedGameName)){
+                    toast("Game Name exists");
+                    strGameName = "";
+                }else {
+                    strGameName = tmpGameName;
+                    toast("Login: " + strGameName);
+                }
+
+            }
+        });
+
+        btnPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tmpPassword = edPassword.getText().toString();
+
+                if(tmpPassword.isEmpty()){
+                    toast("Password is empty");
+                    strPassword = "";
+                    bIsPassword = false;
+                }else {
+                    strPassword = tmpPassword;
+                    toast("Password: " + strPassword);
+                    bIsPassword = true;
+                }
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tmpLogin = edLogin.getText().toString();
+
+                if(tmpLogin.isEmpty()){
+                    toast("Login is empty");
+                    strLogin = "";
+                }else if(tmpLogin.equals(strOccupiedGameName)){
+                    toast("Game Name exists");
+                    strLogin = "";
+                }else {
+                    strLogin = tmpLogin;
+                    toast("Login: " + strGameName);
+                }
             }
         });
     }
@@ -38,5 +150,12 @@ public class Create extends AppCompatActivity {
         Create.this.startActivity(main);
         Create.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    private void toast( String text )
+    {
+        Toast.makeText( Create.this,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
     }
 }

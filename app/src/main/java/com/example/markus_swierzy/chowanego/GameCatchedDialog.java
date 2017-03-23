@@ -15,18 +15,20 @@ import android.widget.Button;
 
 public class GameCatchedDialog extends DialogFragment {
 
-    String strGameName = "";
-    int nGameID = -1;
+    private String strGameName = "";
+    private int nGameID = -1;
+    private String strLogin = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.game_catched_dialog, container, false);
-        getDialog().setTitle("Connect");
+        getDialog().setTitle("Catched???");
 
         Button no = (Button) rootView.findViewById(R.id.btnGameCatchedNo);
 
         strGameName = getArguments().getString("GameName");
         nGameID = getArguments().getInt("GameID",-1);
+        strLogin = getArguments().getString("Login");
 
         no.setOnClickListener(new View.OnClickListener() {
 
@@ -43,6 +45,7 @@ public class GameCatchedDialog extends DialogFragment {
                 Activity activity = getActivity();
                 Intent i = new Intent(activity, Waiting.class);
                 i.putExtra("GameName", strGameName);
+                i.putExtra("Login", strLogin);
                 i.putExtra("GameID", nGameID);
                 activity.startActivity(i);
                 activity.finish();

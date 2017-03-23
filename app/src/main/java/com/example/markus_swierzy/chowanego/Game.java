@@ -1,12 +1,16 @@
 package com.example.markus_swierzy.chowanego;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -17,18 +21,28 @@ import android.widget.Toast;
 
 public class Game extends AppCompatActivity implements SensorEventListener {
 
-    String strGameName = "";
-    int nGameID = -1;
+    private String strGameName = "";
+    private String strLogin = "";
+    private int nGameID = -1;
 
-    // define the display assembly compass picture
+    /*
+        Zmienne timera
+     */
+    private TextView timerValue;
+    private long startTime = 0L;
+    private Handler customHandler = new Handler();
+    private long HideTime = 100000L;
+
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+
+    /*
+        Zmienne kompasu
+     */
     private ImageView image;
-
-    // record the compass picture angle turned
     private float currentDegree = 0f;
-
-    // device sensor manager
     private SensorManager mSensorManager;
-
     TextView tvHeading;
 
     @Override
@@ -37,21 +51,29 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         setContentView(R.layout.activity_game);
 
         Button catched = (Button) findViewById(R.id.btnGameCatched);
-        image = (ImageView) findViewById(R.id.imageViewCompass);
+        TextView txtGameName = (TextView) findViewById(R.id.tvGameName);
+        TextView txtLogin = (TextView) findViewById(R.id.txtGameLogin);
 
+        strGameName = getIntent().getStringExtra("GameName");
+        nGameID = getIntent().getIntExtra("GameID",-1);
+        strLogin = getIntent().getStringExtra("Login");
+
+        txtGameName.setText(strGameName);
+        txtLogin.setText(strLogin);
+
+        startTime = SystemClock.uptimeMillis();
+        customHandler.postDelayed(DownCount, 0);
+        /*
+            Kompas
+         */
+        image = (ImageView) findViewById(R.id.imageViewCompass);
+        timerValue = (TextView) findViewById(R.id.tvGameTimer);
 
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.tvHeading);
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        TextView txtGameName = (TextView) findViewById(R.id.txtGameName);
-        TextView txtGameID = (TextView) findViewById(R.id.txtGameID);
-        strGameName = getIntent().getStringExtra("GameName");
-        nGameID = getIntent().getIntExtra("GameID",-1);
-        txtGameName.setText(strGameName);
-        txtGameID.setText(Integer.toString(nGameID));
 
         catched.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,10 +86,6 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 args.putString("GameName", strGameName);
                 dialogFragment.setArguments(args);
                 dialogFragment.show(fm, "Sample Fragment");
-
-                //Intent intent = new Intent(getBaseContext(), ConnectDialog.class);
-                //intent.putExtra("GameName", strGameName);
-                //intent.putExtra("SelectedID", nSelected);
             }
         });
     }
@@ -79,6 +97,77 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 .show();
     }
 
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getFragmentManager();
+        GameDialogQuit dialogFragment = new GameDialogQuit();
+        Bundle args = new Bundle();
+        args.putInt("GameID", nGameID);
+        args.putString("GameName", strGameName);
+        args.putString("Login", strLogin);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(fm, "Quit Game");
+    }
+
+    /*
+        Okno wyswietlane przy koncu czasu
+    */
+    public void EndOfTime(){
+        FragmentManager fm = getFragmentManager();
+        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
+        Bundle args = new Bundle();
+        args.putInt("GameID", nGameID);
+        args.putString("GameName", strGameName);
+        args.putString("Login", strLogin);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(fm, "End of Time");
+    }
+
+    /*
+        Odliczanie zegara do gory
+    */
+    private Runnable UpCount = new Runnable() {
+
+        public void run() {
+
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timerValue.setText("" + mins + ":"
+                    + String.format("%02d", secs) + ":"
+                    + String.format("%03d", milliseconds));
+            customHandler.postDelayed(this, 0);
+        }
+
+    };
+
+    /*
+        Odliczanie zegara w dol
+    */
+    private Runnable DownCount = new Runnable() {
+
+        public void run() {
+
+            timeInMilliseconds = HideTime - (SystemClock.uptimeMillis() - startTime);
+
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timerValue.setText("" + mins + ":"
+                    + String.format("%02d", secs) + ":"
+                    + String.format("%03d", milliseconds));
+            customHandler.postDelayed(this, 0);
+        }
+
+    };
     @Override
     protected void onResume() {
         super.onResume();

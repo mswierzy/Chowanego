@@ -2,17 +2,25 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/splashScreenImage"
-        android:src="@drawable/opening"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ImageView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/creditsText"
         android:text="autor: BSSW"
+        android:fontFamily="cursive"
+        android:textColor="@color/white"
         android:layout_gravity="center_horizontal|bottom">
     </TextView>
+
+    <TextView
+        android:id="@+id/tvSplashTitle"
+        android:textColor="@color/white"
+        android:shadowColor="@color/lightGray"
+        android:text="@string/app_name"
+        android:textSize="56sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:layout_gravity="center"/>
 </FrameLayout>

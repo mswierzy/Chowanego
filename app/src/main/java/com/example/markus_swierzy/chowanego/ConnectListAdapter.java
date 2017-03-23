@@ -8,78 +8,93 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by markus_swierzy on 2017-03-14.
  */
 
-public class ConnectListAdapter extends ArrayAdapter<ConnectRow> {
+public class ConnectListAdapter extends BaseAdapter {
 
-    private List<ConnectRow> items;
-    private int layoutResourceId;
+    private List<GameInfo> items;
     private Context context;
+    private final Map<View, Map<Integer,View>> cache = new HashMap<View, Map<Integer,View>>();
 
-    public ConnectListAdapter(Context context, int layoutResourceId, List<ConnectRow> items) {
-        super(context, layoutResourceId, items);
-        this.layoutResourceId = layoutResourceId;
+    public ConnectListAdapter(Context context, List<GameInfo> items) {
         this.context = context;
         this.items = items;
     }
 
     @Override
+    public int getCount() {
+        return items.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return items.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return getItem( position ).hashCode();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        ConnectHolder holder = null;
+        View v = convertView;
+        TextView tv;
+        ImageView iv;
+        if ( v == null )
+        {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            v = inflater.inflate( R.layout.connect_list_item, parent, false );
+        }
+        Map<Integer, View> itemMap = cache.get( v );
+        if( itemMap == null )
+        {
+            itemMap = new HashMap<Integer, View>();
+            tv = (TextView) v.findViewById( R.id.tvConnectListItemGameName );
+            iv = (ImageView) v.findViewById( R.id.ivConnectListItemHelp );
+            itemMap.put( R.id.tvConnectListItemGameName, tv );
+            itemMap.put(R.id.ivConnectListItemHelp, iv );
+            cache.put( v, itemMap );
+        }
+        else
+        {
+            tv = (TextView)itemMap.get( R.id.tvConnectListItemGameName );
+            iv = (ImageView)itemMap.get( R.id.ivConnectListItemHelp );
+        }
+        final GameInfo item = (GameInfo) getItem( position );
+        tv.setText( item.getGameName() );
+        iv.setOnClickListener( new View.OnClickListener()
+        {
 
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        row = inflater.inflate(layoutResourceId, parent, false);
-
-        holder = new ConnectHolder();
-        holder.connectRow = items.get(position);
-        holder.ChooseGame = (RadioButton)row.findViewById(R.id.btnConnect);
-        //holder.removePaymentButton.setTag(holder.connectRow);
-
-        holder.name = (TextView)row.findViewById(R.id.txtNameConnectRow);
-        holder.value = (TextView)row.findViewById(R.id.txtPlayersConnectRow);
-        holder.ChooseGame = (RadioButton)row.findViewById(R.id.btnConnect);
-
-        holder.ChooseGame.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-// set Yes values in ArrayList if RadioButton is checked
-                if (isChecked)
-                    Log.d(".chowanego","Wlaz");
+            public void onClick( View v )
+            {
+                String strGameName = "Game Name: " + item.getGameName();
+
+                String strStatus = "Game Status: " + item.getStatusString();
+
+                String strPlayers = "Players: " + Integer.toString(item.getPlayersCnt());
+                Toast.makeText( context,
+                        String.format( "%s\n%s\n%s", strGameName, strStatus, strPlayers),
+                        Toast.LENGTH_SHORT ).show();
             }
-        });
-
-        holder.ChooseGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Dolacz do gry!!!!
-                Log.d(".chowanego", "Wlaz2");
-            }
-        });
-        row.setTag(holder);
-
-        setupItem(holder);
-        return row;
-    }
-
-    private void setupItem(ConnectHolder holder) {
-        holder.name.setText(holder.connectRow.getGameName());
-        holder.value.setText(String.valueOf(holder.connectRow.getPlayers()));
-    }
-
-    public static class ConnectHolder {
-        ConnectRow connectRow;
-        TextView name;
-        TextView value;
-        RadioButton ChooseGame;
+        } );
+        return v;
     }
 }

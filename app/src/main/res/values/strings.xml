@@ -16,4 +16,11 @@
     <string name="txtSearchTime">Search Time</string>
     <string name="txtHideTime">Hide Time</string>
     <string name="txtSet">Set</string>
+    <string name="txtCreatedBy">Created by: BSSW</string>
+    <string name="txtLogginOccupied">Login is Occupied</string>
+    <string name="txtTimerVal">00:00:00</string>
+    <string name="txtPlayerName">Player Name</string>
+    <string name="txtYes">Yes</string>
+    <string name="txtNo">No</string>
+    <string name="txtOk">Ok</string>
 </resources>
