@@ -20,6 +20,7 @@ public class ConnectDialogNoPassword extends DialogFragment {
     private Activity activity;
     private String strGameName = "";
     private int nGameID = -1;
+    private int nLoginID = -1;
     private String strLogin = "";
 
     @Override
@@ -49,10 +50,13 @@ public class ConnectDialogNoPassword extends DialogFragment {
         play.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                // Stworz ID gracza
+                nLoginID = 5;
                 Intent i = new Intent(activity, Game.class);
                 i.putExtra("GameName", strGameName);
                 i.putExtra("GameID", nGameID);
                 i.putExtra("Login", strLogin);
+                i.putExtra("LoginID", nLoginID);
                 activity.startActivity(i);
                 activity.finish();
             }

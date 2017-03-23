@@ -24,4 +24,8 @@
     <string name="txtYes">Tak</string>
     <string name="txtNo">Nie</string>
     <string name="txtOk">Ok</string>
+    <string name="txtToFind">Do znalezienia:</string>
+    <string name="txtSearcher">Szukający</string>
+    <string name="txtToCatch">Do złapania</string>
+    <string name="txtStart">Start</string>
 </resources>

@@ -21,6 +21,7 @@ public class ConnectDialogPassword extends DialogFragment {
     private String strGameName = "";
     private int nGameID = -1;
     private String strLogin = "";
+    private int nLoginID = -1;
     private String strPassword;
 
     @Override
@@ -57,10 +58,13 @@ public class ConnectDialogPassword extends DialogFragment {
                     toast("No password typed");
                 }else {
                     if(strTypedPassword.equals(strPassword)){
+                        // Stworz ID gracza
+                        nLoginID = 5;
                         Intent i = new Intent(activity, Game.class);
                         i.putExtra("GameName", strGameName);
                         i.putExtra("GameID", nGameID);
                         i.putExtra("Login", strLogin);
+                        i.putExtra("LoginID", nLoginID);
                         activity.startActivity(i);
                         activity.finish();
                     }else {

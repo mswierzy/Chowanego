@@ -23,4 +23,8 @@
     <string name="txtYes">Yes</string>
     <string name="txtNo">No</string>
     <string name="txtOk">Ok</string>
+    <string name="txtToFind">To Find:</string>
+    <string name="txtSearcher">Searcher</string>
+    <string name="txtToCatch">To Catch</string>
+    <string name="txtStart">Start</string>
 </resources>

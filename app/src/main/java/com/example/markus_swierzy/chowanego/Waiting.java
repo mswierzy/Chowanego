@@ -52,6 +52,10 @@ public class Waiting extends Activity {
 
         Button btnQuit = (Button) findViewById(R.id.btnWaitingQuit);
 
+        /*
+            Wyciagnij z bazy strLoginSearcher
+         */
+
         tvGameName.setText(strGameName);
         tvSearcher.setText(strLoginSearcher);
 
@@ -96,6 +100,8 @@ public class Waiting extends Activity {
                 dialogFragment.show(fm, "Quit Game");
             }
         });
+
+
     };
 
     @Override
@@ -111,4 +117,15 @@ public class Waiting extends Activity {
         dialogFragment.show(fm, "Quit Game");
     }
 
+    public void NewGame(){
+        FragmentManager fm = getFragmentManager();
+        WaitingDialogNewGame dialogFragment = new WaitingDialogNewGame();
+        Bundle args = new Bundle();
+        args.putInt("GameID", nGameID);
+        args.putString("GameName", strGameName);
+        args.putString("Login", strLogin);
+        args.putInt("LoginID", nLoginID);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(fm, "New Game");
+    }
 }
