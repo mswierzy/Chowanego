@@ -1,0 +1,19 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TableLayout>
+        <TableRow>
+            <Button
+                android:text="@string/txtBtnExit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnGameDialogQuitExit" />
+            <Button
+                android:text="@string/txtCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnGameDialogQuitCancel" />
+        </TableRow>
+    </TableLayout>
+</TableLayout>

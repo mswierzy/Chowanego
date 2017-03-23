@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.markus_swierzy.chowanego.Game"
-    android:layout_column="1"
-    android:layout_row="4">
+    android:columnCount="1"
+    android:rowCount="4">
     <GridLayout
         android:layout_width="match_parent"
         android:layout_column="0"

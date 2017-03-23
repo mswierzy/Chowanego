@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="Line 2"
         android:layout_toRightOf="@+id/icon"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/tvTitle"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

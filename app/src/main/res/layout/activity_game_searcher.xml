@@ -1,6 +1,175 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_game_searcher"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <!-- The main content view -->
+    <RelativeLayout
+        android:id="@+id/rlGameSearcherMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="1"
+            android:rowCount="4">
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:columnCount="3"
+                android:rowCount="1">
+                <TextView
+                    android:layout_column="0"
+                    android:layout_row="0"
+                    android:id="@+id/tvGameSearcherTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:text="@string/txtTimerVal"
+                    android:layout_gravity="left"/>
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_row="0"
+                    android:text="@string/txtGameName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvGameSearcherGameName"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:text="@string/txtPlayerName"
+                    android:layout_column="2"
+                    android:layout_row="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtGameSearcherLogin"
+                    android:layout_gravity="right"/>
+            </GridLayout>
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:columnCount="2"
+                android:rowCount="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="0"
+                    android:text="@string/txtToFind"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_column="1"
+                    android:layout_row="0"
+                    android:text="@string/txtToFind"
+                    android:id="@+id/tvGameSearcherPlayerToFind"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+            </GridLayout>
+
+            <RelativeLayout
+                android:layout_column="0"
+                android:layout_row="2"
+                android:layout_width="match_parent"
+                android:layout_height="300sp">
+
+                <TextView
+                    android:id="@+id/tvGameSearcherHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Heading: 0.0" />
+
+                <ImageView
+                    android:id="@+id/imageGameSearcherViewCompass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvGameSearcherHeading"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/img_compass" />
+
+            </RelativeLayout>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_column="0"
+                android:layout_row="3">
+                <Button
+                    android:id="@+id/btnGameSearcherCatched"
+                    android:text="@string/txtCatched"/>
+            </TableLayout>
+        </GridLayout>
+    </RelativeLayout>
+
+    <!-- The navigation drawer -->
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:id="@+id/rlGameSearcherDrawerPane"
+        android:layout_gravity="start">
+
+        <!-- Profile Box -->
+
+        <RelativeLayout
+            android:id="@+id/profileBox"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/material_blue_grey_800"
+            android:padding="8dp" >
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_marginTop="15dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/avatar"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rishabh"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="4dp"
+                    android:text="View Profile"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- List of Actions (pages) -->
+        <ListView
+            android:id="@+id/lvGameSearcherList"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/profileBox"
+            android:choiceMode="singleChoice"
+            android:background="#ffffffff" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>

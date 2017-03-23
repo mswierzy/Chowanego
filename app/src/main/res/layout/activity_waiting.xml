@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TableRow>
+        <TextView
+            android:text="@string/txtGameName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:layout_gravity="start"/>
+        <TextView
+            android:text="@string/txtGameName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:id="@+id/tvWaitingGameName"
+            android:layout_gravity="left"
+            android:gravity="left"/>
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:text="@string/txtSearcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:layout_gravity="start"/>
+        <TextView
+            android:text="@string/txtSearcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:id="@+id/tvWaitingSearcher"
+            android:layout_gravity="left"
+            android:gravity="left"/>
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:text="@string/txtCatched"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:layout_gravity="start"
+            android:gravity="start"/>
+        <TextView
+            android:text="@string/txtToCatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:layout_gravity="left"
+            android:gravity="left"/>
+    </TableRow>
 
-    <TextView
-        android:text="Waiting"
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-</LinearLayout>
+        android:layout_height="match_parent">
+            <ListView
+                android:layout_height="300sp"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:id="@+id/lvWaitingCatched"
+                android:layout_width="match_parent"
+                android:layout_weight=".50"
+                android:background="@color/lightGray">
+            </ListView>
+            <ListView
+                android:layout_height="300sp"
+                android:layout_width="match_parent"
+                android:layout_weight=".50"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:id="@+id/lvWaitingToCatch"
+                android:background="@color/lightGray">
+            </ListView>
+    </TableRow>
+
+    <Button
+        android:id="@+id/btnWaitingQuit"
+        android:text="@string/txtBtnExit"/>
+</TableLayout>
