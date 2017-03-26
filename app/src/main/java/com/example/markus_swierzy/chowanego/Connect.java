@@ -7,6 +7,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,8 @@ public class Connect extends AppCompatActivity {
     ConnectListAdapter adapter;
     int nSelected = -1;
 
+    Resources res;
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -72,14 +75,6 @@ public class Connect extends AppCompatActivity {
         GameInfoList.add(new GameInfo("Mokre", 7, 1, true, "abcd", 2));
         GameInfoList.add(new GameInfo("Rozniatow", 1, 0, false, "", 3));
 
-        /*for ( int i = 1; i <= 5; i++ )
-        {
-
-            data.add( String.format( "Item %d", i ) );
-        }*/
-
-        //adapter = new CustomAdapter( Connect.this, data );
-
         adapter = new ConnectListAdapter(Connect.this, GameInfoList);
 
         ListView listView = (ListView)findViewById( R.id.list );
@@ -90,19 +85,21 @@ public class Connect extends AppCompatActivity {
         search.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
         play.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
 
+        res = getResources();
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 strLogin = txtLogin.getText().toString();
                 if(strLogin.equals("")){
-                    toast("No Login typed");
+                    toast(res.getString(R.string.txtNoLoginTyped));
                 }else{
                     if (strLogin.equals(strOccupiedLogin)) {
-                        toast("Login Occupied");
+                        toast(res.getString(R.string.txtLogginOccupied));
                         txtLogin.setText("");
                         strLogin = "";
                     }else{
-                        String strToast = "Login set: " + strLogin;
+                        String strToast = res.getString(R.string.txtLoginSet) + ": " + strLogin;
                         toast(strToast);
                     }
                 }
@@ -124,9 +121,9 @@ public class Connect extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (nSelected < 0){
-                    toast("No game selected");
+                    toast(res.getString(R.string.txtNoGameSelected));
                 } else if(strLogin.equals("")){
-                    toast("No Login typed");
+                    toast(res.getString(R.string.txtNoLoginTyped));
                 }else{
                     if(GameInfoList.get(nSelected).getIsPassword()){
 

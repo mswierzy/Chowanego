@@ -3,6 +3,7 @@ package com.example.markus_swierzy.chowanego;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,15 @@ public class GameDialogEndOfTime extends DialogFragment {
     private int nGameID = -1;
     private String strLogin = "";
 
+    Resources res;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.game_catched_dialog, container, false);
-        getDialog().setTitle("End Of Time!!!");
+
+        res = getResources();
+
+        getDialog().setTitle(res.getString(R.string.txtEndOfTime) + "!!!");
 
         Button ok = (Button) rootView.findViewById(R.id.btnGameEndOfTimeOk);
 

@@ -3,6 +3,7 @@ package com.example.markus_swierzy.chowanego;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class ConnectDialogPassword extends DialogFragment {
     private int nLoginID = -1;
     private String strPassword;
 
+    Resources res;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.connect_dialog_password, container, false);
@@ -38,6 +41,8 @@ public class ConnectDialogPassword extends DialogFragment {
         strLogin = getArguments().getString("Login");
         nGameID = getArguments().getInt("GameID",-1);
         strPassword = getArguments().getString("Password");
+
+        res = getResources();
 
         getDialog().setTitle(strLogin);
 
@@ -55,7 +60,7 @@ public class ConnectDialogPassword extends DialogFragment {
             public void onClick(View v){
                 String strTypedPassword = password.getText().toString();
                 if(strTypedPassword.equals("")){
-                    toast("No password typed");
+                    toast(res.getString(R.string.txtNoPasswordTyped));
                 }else {
                     if(strTypedPassword.equals(strPassword)){
                         // Stworz ID gracza
@@ -68,7 +73,7 @@ public class ConnectDialogPassword extends DialogFragment {
                         activity.startActivity(i);
                         activity.finish();
                     }else {
-                        toast("Wrong password");
+                        toast(res.getString(R.string.txtWrongPassword));
                     }
                 }
             }

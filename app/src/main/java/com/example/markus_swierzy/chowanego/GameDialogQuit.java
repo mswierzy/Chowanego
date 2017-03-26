@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +24,26 @@ public class GameDialogQuit extends DialogFragment {
     private String strLogin = "";
     private int nLoginID = -1;
 
+    Resources res;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.game_dialog_quit, container, false);
 
+        res = getResources();
         activity = getActivity();
 
-        Button play = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameStart);
-        Button cancel = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameCancel);
+        Button exit = (Button) rootView.findViewById(R.id.btnGameDialogQuitExit);
+        Button cancel = (Button) rootView.findViewById(R.id.btnGameDialogQuitCancel);
 
-        getDialog().setTitle("Play new game?");
+        getDialog().setTitle(res.getString(R.string.txtConnectDialogPassword) + "???");
 
         strGameName = getArguments().getString("GameName");
         strLogin = getArguments().getString("Login");
         nLoginID = getArguments().getInt("LoginID");
         nGameID = getArguments().getInt("GameID");
+
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +52,7 @@ public class GameDialogQuit extends DialogFragment {
         });
 
 
-        play.setOnClickListener(new View.OnClickListener(){
+        exit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 /*
@@ -55,13 +61,6 @@ public class GameDialogQuit extends DialogFragment {
                 Intent i = new Intent(activity, CHMainMenu.class);
                 activity.startActivity(i);
                 activity.finish();
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                dismiss();
             }
         });
 

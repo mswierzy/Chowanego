@@ -2,6 +2,7 @@ package com.example.markus_swierzy.chowanego;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class Create extends AppCompatActivity {
     EditText edLogin;
     EditText edHideTime;
     EditText edSearchTime;
+
+    Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +71,9 @@ public class Create extends AppCompatActivity {
 
                 // Dolacz do gry!!!!
                 if(strGameName.isEmpty()){
-                    toast("Game Name is Empty");
+                    toast(res.getString(R.string.txtNoGameNameTyped));
                 }else if(strLogin.isEmpty()){
-                    toast("Login is Empty");
+                    toast(res.getString(R.string.txtNoLoginTyped));
                 }else{
                     FragmentManager fm = getFragmentManager();
                     CreateDialog dialogFragment = new CreateDialog ();
@@ -95,14 +98,14 @@ public class Create extends AppCompatActivity {
                 String tmpGameName = edGameName.getText().toString();
 
                 if(tmpGameName.isEmpty()){
-                    toast("Game Name is empty");
+                    toast(res.getString(R.string.txtNoGameNameTyped));
                     strGameName = "";
                 }else if(tmpGameName.equals(strOccupiedGameName)){
-                    toast("Game Name exists");
+                    toast(res.getString(R.string.txtNoGameNameExists));
                     strGameName = "";
                 }else {
                     strGameName = tmpGameName;
-                    toast("Login: " + strGameName);
+                    toast(res.getString(R.string.txtLogin) + ": " + strGameName);
                 }
 
             }
@@ -114,12 +117,12 @@ public class Create extends AppCompatActivity {
                 String tmpPassword = edPassword.getText().toString();
 
                 if(tmpPassword.isEmpty()){
-                    toast("Password is empty");
+                    toast(res.getString(R.string.txtNoPasswordTyped));
                     strPassword = "";
                     bIsPassword = false;
                 }else {
                     strPassword = tmpPassword;
-                    toast("Password: " + strPassword);
+                    toast(res.getString(R.string.txtPassword) + ": " + strPassword);
                     bIsPassword = true;
                 }
             }
@@ -131,14 +134,14 @@ public class Create extends AppCompatActivity {
                 String tmpLogin = edLogin.getText().toString();
 
                 if(tmpLogin.isEmpty()){
-                    toast("Login is empty");
+                    toast(res.getString(R.string.txtNoLoginTyped));
                     strLogin = "";
                 }else if(tmpLogin.equals(strOccupiedGameName)){
-                    toast("Game Name exists");
+                    toast(res.getString(R.string.txtLoginOccupied));
                     strLogin = "";
                 }else {
                     strLogin = tmpLogin;
-                    toast("Login: " + strGameName);
+                    toast(res.getString(R.string.txtLogin) + ": " + strGameName);
                 }
             }
         });

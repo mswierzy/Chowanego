@@ -3,6 +3,7 @@ package com.example.markus_swierzy.chowanego;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +26,17 @@ public class CreateDialog extends DialogFragment {
     private int nGameID = -1;
     private int nLoginID = -1;
 
+    Resources res;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.create_dialog, container, false);
 
+        res = getResources();
+
         activity = getActivity();
 
-        getDialog().setTitle("Create Game??");
+        getDialog().setTitle(res.getString(R.string.txtCreateGame) + "???");
 
         Button dismiss = (Button) rootView.findViewById(R.id.btnCreateDialogCancel);
         Button create = (Button) rootView.findViewById(R.id.btnCreateDialogCreate);

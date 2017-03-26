@@ -3,6 +3,7 @@ package com.example.markus_swierzy.chowanego;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,7 @@ public class ConnectListAdapter extends BaseAdapter {
         View v = convertView;
         TextView tv;
         ImageView iv;
+
         if ( v == null )
         {
             LayoutInflater inflater = (LayoutInflater) context
@@ -78,6 +80,7 @@ public class ConnectListAdapter extends BaseAdapter {
             iv = (ImageView)itemMap.get( R.id.ivConnectListItemHelp );
         }
         final GameInfo item = (GameInfo) getItem( position );
+        final Context mContext = this.context;
         tv.setText( item.getGameName() );
         iv.setOnClickListener( new View.OnClickListener()
         {
@@ -85,11 +88,11 @@ public class ConnectListAdapter extends BaseAdapter {
             @Override
             public void onClick( View v )
             {
-                String strGameName = "Game Name: " + item.getGameName();
 
-                String strStatus = "Game Status: " + item.getStatusString();
+                String strGameName = mContext.getString(R.string.txtGameName) + ": " + item.getGameName();
+                String strStatus = mContext.getString(R.string.txtGameStatus)+ ": " + item.getStatusString();
+                String strPlayers = mContext.getString(R.string.txtPlayersCount) + ": " + Integer.toString(item.getPlayersCnt());
 
-                String strPlayers = "Players: " + Integer.toString(item.getPlayersCnt());
                 Toast.makeText( context,
                         String.format( "%s\n%s\n%s", strGameName, strStatus, strPlayers),
                         Toast.LENGTH_SHORT ).show();

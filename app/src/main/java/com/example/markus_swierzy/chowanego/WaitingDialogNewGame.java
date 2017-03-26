@@ -30,10 +30,11 @@ public class WaitingDialogNewGame extends DialogFragment {
 
         activity = getActivity();
 
-        Button exit = (Button) rootView.findViewById(R.id.btnGameDialogQuitExit);
-        Button cancel = (Button) rootView.findViewById(R.id.btnGameDialogQuitCancel);
+        Button play = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameStart);
+        Button cancel = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameCancel);
 
-        getDialog().setTitle("Do You really want to quit?");
+        getDialog().setTitle("Play new game?");
+
         strGameName = getArguments().getString("GameName");
         strLogin = getArguments().getString("Login");
         nLoginID = getArguments().getInt("LoginID");
@@ -46,7 +47,7 @@ public class WaitingDialogNewGame extends DialogFragment {
         });
 
 
-        exit.setOnClickListener(new View.OnClickListener(){
+        play.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 /*
@@ -69,6 +70,13 @@ public class WaitingDialogNewGame extends DialogFragment {
                     activity.startActivity(i);
                     activity.finish();
                 }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
 
