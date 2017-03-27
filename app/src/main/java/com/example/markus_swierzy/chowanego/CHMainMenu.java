@@ -13,11 +13,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CHMainMenu extends Activity {
 
     int x=0;
+
+    GPSTracker gps;
+    public static double latitude;
+    public static double longitude;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -87,6 +92,49 @@ public class CHMainMenu extends Activity {
                 //overridePendingTransition(R.layout.fadein, R.layout.fadeout);
             }
         });
+
+
+        Thread t = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                /*Float latitudePos = ekran_akt_pozycji.latitudePos;
+                                Float longitudePos = ekran_akt_pozycji.longitudePos;
+                                TextView textView_act_pos = (TextView) findViewById(R.id.textView_act_pos);
+                                textView_act_pos.setText("\n " + latitudePos + " " + longitudePos);
+                                */
+
+                                gps = new GPSTracker(CHMainMenu.this);
+
+                                // check if GPS enabled
+                                if(gps.canGetLocation()){
+
+                                    latitude = gps.getLatitude();
+                                    longitude = gps.getLongitude();
+
+                                    // tymczasowo, usunac pozniej tez z layoutu na koniec jak bedzie wszystko dzialalo!!!!!
+                                    TextView textView_tmp = (TextView) findViewById(R.id.textView_tmp);
+                                    textView_tmp.setText("\n " + latitude + " " + longitude);
+
+                                }else{
+                                    gps.showSettingsAlert();
+                                }
+
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        t.start();
 
     }
 
