@@ -27,6 +27,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
 
     private String message;
     private int success;
+    private int idGry;
+    private int idGracza;
 
     String latitudePos;// = CreateDialog.nLatitude;
     String longitudePos;// = CreateDialog.nLongitude;
@@ -37,6 +39,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
+    private static final String TAG_ID_GRY = "ID_Gry";
+    private static final String TAG_ID_GRACZA = "ID_Gracza";
 
 
     /**
@@ -99,14 +103,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
         try {
             this.success = json.getInt(TAG_SUCCESS);
             this.message = json.getString(TAG_MESSAGE);
-/*
-            if (success == 1) {
-                toast(message);
-            } else {
-                toast (message);
-                // failed to create product
-            }
- */
+            this.idGry = Integer.parseInt(json.getString(TAG_ID_GRY));
+            this.idGracza = Integer.parseInt(json.getString(TAG_ID_GRACZA));
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -132,10 +130,10 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
     }
 
     public int getGameID() {
-        return 3;
+        return this.idGry;
     }
 
     public int getLoginID() {
-        return 5;
+        return this.idGracza;
     }
 }

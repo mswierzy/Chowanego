@@ -71,10 +71,6 @@ public class CreateDialog extends DialogFragment {
             public void onClick(View v){
 
                 Intent i = new Intent(activity, GameSearcher.class);
-                // Create GameID
-                nGameID = 12;
-                nLoginID = 3;
-
 
                 String Nazwa_gry = strGameName;
                 String Haslo_gry = strPassword;
@@ -83,8 +79,6 @@ public class CreateDialog extends DialogFragment {
                 String Czas_ukrycia = Integer.toString(nHideTime);
                 String Latitude = Double.toString(nLatitude);
                 String Longitude = Double.toString(nLongitude);
-
-                // TODO: pomyslec i moze dodac ifa ze jezeli ktores pole puste to od razu info ze poprawic i nie przechodzi do wykonywania 3 linijek ktore sa nizej
 
                 MyTaskParams args = new MyTaskParams(Nazwa_gry, Haslo_gry, Login, Czas_szukania, Czas_ukrycia, Latitude, Longitude);
                 CreateNewGame newGame = new CreateNewGame(activity, Latitude, Longitude);
@@ -95,10 +89,6 @@ public class CreateDialog extends DialogFragment {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-
-                //toast(newGame.getMessage());
-
-// TODO: tutaj dodać polaczenie z serwerem i wysylanie danych (rekordu) do bazy, i zrobic pobieranie ID_Gry z bazy i przepisac to do zmiennej nGameID i id gracza szukającego z bazy do nLoginID
 
 
                 if (newGame.getSuccess() == 1 ){
@@ -115,7 +105,6 @@ public class CreateDialog extends DialogFragment {
 
                 i.putExtra("GameName", strGameName);
                 i.putExtra("Login", strLogin);
-                // TODO: tutaj pobierac te zmienne z bazy
                 i.putExtra("GameID", nGameID);
                 i.putExtra("LoginID", nLoginID);
             }
