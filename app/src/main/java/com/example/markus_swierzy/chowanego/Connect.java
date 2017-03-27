@@ -31,17 +31,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class Connect extends AppCompatActivity {
 
     String strLogin = "";
     String strOccupiedLogin = "Adam";
-    String strSearch = "";
+    //String strSearch = "";
     String strGameName = "";
     List<String> data = new ArrayList<String>();
     List<GameInfo> GameInfoList = new ArrayList<GameInfo>();
 
-    //CustomAdapter adapter;
     ConnectListAdapter adapter;
     int nSelected = -1;
 
@@ -60,20 +60,34 @@ public class Connect extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
 
         Button login = (Button) findViewById(R.id.btnConnectLogin);
-        Button search = (Button) findViewById(R.id.btnConnectSearch);
+        //Button search = (Button) findViewById(R.id.btnConnectSearch);
         Button play = (Button) findViewById(R.id.btnConnectPlay);
 
         final EditText txtLogin = (EditText)findViewById(R.id.edConnectLogin);
-        final EditText txtSearch = (EditText)findViewById(R.id.edConnectSearch);
+        //final EditText txtSearch = (EditText)findViewById(R.id.edConnectSearch);
 
 
         /*
             Utworzenie listy gier
         */
-        GameInfoList.add(new GameInfo("Roszowicki Las", 5, 1, true, "1234", 0));
-        GameInfoList.add(new GameInfo("Mikolow", 4, 0, false, "", 1));
-        GameInfoList.add(new GameInfo("Mokre", 7, 1, true, "abcd", 2));
-        GameInfoList.add(new GameInfo("Rozniatow", 1, 0, false, "", 3));
+
+
+// tutaj zrobic konstruktor z przekazaniem activity i z przekazaniem GameInfoList
+
+        GetAllGames games = new GetAllGames(GameInfoList);
+        try {
+            games.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        GameInfoList = games.getList();
+
+
+        //GameInfoList.add(new GameInfo(0, "Roszowicki Las", "1234", "20:10:00", "20:30:00"));
+        //GameInfoList.add(new GameInfo(1, "Mikolow", "abcd", "19:00:00", "19:10:00"));
 
         adapter = new ConnectListAdapter(Connect.this, GameInfoList);
 
@@ -82,7 +96,7 @@ public class Connect extends AppCompatActivity {
         listView.setAdapter( adapter );
 
         login.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
-        search.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
+        //search.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
         play.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
 
         res = getResources();
@@ -106,16 +120,16 @@ public class Connect extends AppCompatActivity {
 
             }
         });
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                strSearch = txtSearch.getText().toString();
-                GameInfoList.clear();
-                GameInfoList.add( new GameInfo(strSearch, 6, 0, true, "1234", 4) );
-                adapter.notifyDataSetChanged();
-            }
-        });
+// TODO: Wiktor - Ja bym to chyba wywalil z wyszukiwaniem, bo niepotrzebne nam to jest raczej a dodatkowo zajmuje troche miejsca na tym ekranie z lista i przyciskiem play
+//        search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                strSearch = txtSearch.getText().toString();
+//                GameInfoList.clear();
+//                GameInfoList.add( new GameInfo(strSearch, 6, 0, true, "1234", 4) );
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,10 +139,10 @@ public class Connect extends AppCompatActivity {
                 } else if(strLogin.equals("")){
                     toast(res.getString(R.string.txtNoLoginTyped));
                 }else{
-                    if(GameInfoList.get(nSelected).getIsPassword()){
+                    //if(GameInfoList.get(nSelected).getIsPassword()) {
 
                         FragmentManager fm = getFragmentManager();
-                        ConnectDialogPassword dialogFragment = new ConnectDialogPassword ();
+                        ConnectDialogPassword dialogFragment = new ConnectDialogPassword();
 
                         Bundle args = new Bundle();
                         args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
@@ -138,18 +152,19 @@ public class Connect extends AppCompatActivity {
                         dialogFragment.setArguments(args);
 
                         dialogFragment.show(fm, "Connect");
-                    }else{
-                        FragmentManager fm = getFragmentManager();
-                        ConnectDialogNoPassword dialogFragment = new ConnectDialogNoPassword ();
-
-                        Bundle args = new Bundle();
-                        args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
-                        args.putString("GameName", GameInfoList.get(nSelected).getGameName());
-                        args.putString("Login", strLogin);
-                        dialogFragment.setArguments(args);
-
-                        dialogFragment.show(fm, "Connect");
-                    }
+                    //}
+//                    else{
+//                        FragmentManager fm = getFragmentManager();
+//                        ConnectDialogNoPassword dialogFragment = new ConnectDialogNoPassword ();
+//
+//                        Bundle args = new Bundle();
+//                        args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
+//                        args.putString("GameName", GameInfoList.get(nSelected).getGameName());
+//                        args.putString("Login", strLogin);
+//                        dialogFragment.setArguments(args);
+//
+//                        dialogFragment.show(fm, "Connect");
+//                    }
                 }
             }
         });

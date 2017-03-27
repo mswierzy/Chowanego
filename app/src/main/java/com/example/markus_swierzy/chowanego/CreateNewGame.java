@@ -52,6 +52,7 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
         this.latitudePos = latitude;
         this.longitudePos = longitude;
     }
+
     // Progress Dialog
     private ProgressDialog pDialog;
 

@@ -90,11 +90,15 @@ public class ConnectListAdapter extends BaseAdapter {
             {
 
                 String strGameName = mContext.getString(R.string.txtGameName) + ": " + item.getGameName();
-                String strStatus = mContext.getString(R.string.txtGameStatus)+ ": " + item.getStatusString(context);
-                String strPlayers = mContext.getString(R.string.txtPlayersCount) + ": " + Integer.toString(item.getPlayersCnt());
+                //String strStatus = mContext.getString(R.string.txtGameStatus)+ ": " + item.getStatusString(context);
+                //String strPlayers = mContext.getString(R.string.txtPlayersCount) + ": " + Integer.toString(item.getPlayersCnt());
 
-                Toast.makeText( context,
+                /*Toast.makeText( context,
                         String.format( "%s\n%s\n%s", strGameName, strStatus, strPlayers),
+                        Toast.LENGTH_SHORT ).show();
+                        */
+                Toast.makeText( context,
+                        String.format( "%s", strGameName),
                         Toast.LENGTH_SHORT ).show();
             }
         } );
