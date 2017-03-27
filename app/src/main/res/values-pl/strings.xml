@@ -28,4 +28,22 @@
     <string name="txtSearcher">Szukający</string>
     <string name="txtToCatch">Do złapania</string>
     <string name="txtStart">Start</string>
+    <string name="txtNoPasswordTyped">Nie wpisano hasła</string>
+    <string name="txtWrongPassword">Złe hasło</string>
+    <string name="txtNoLoginTyped">NIe wpisano loginu</string>
+    <string name="txtLoginOccupied">Login zajęty</string>
+    <string name="txtLoginSet">Login</string>
+    <string name="txtNoGameSelected">Nie wybrano gry</string>
+    <string name="txtGameStatus">Status gry</string>
+    <string name="txtPlayersCount">Ilość graczy</string>
+    <string name="txtNoGameNameTyped">Nie wpisano nazwy gry</string>
+    <string name="txtNoGameNameExists">Nazwa gry już istnieje</string>
+    <string name="txtCreateGame">Stworzyć grę</string>
+    <string name="txtEndOfTime">Koniec czasu</string>
+    <string name="txtDoYouReallyWantToQuit">Czy naprawdę chcesz zakończyć grę</string>
+    <string name="txtHiding">Chowanie</string>
+    <string name="txtSearching">Szukanie</string>
+    <string name="txtWaiting">Czekanie</string>
+    <string name="txtError">Błąd</string>
+    <string name="txtPlayNewGame">Zagraj jeszcze raz</string>
 </resources>

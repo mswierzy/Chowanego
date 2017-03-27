@@ -27,4 +27,22 @@
     <string name="txtSearcher">Searcher</string>
     <string name="txtToCatch">To Catch</string>
     <string name="txtStart">Start</string>
+    <string name="txtNoPasswordTyped">No password typed</string>
+    <string name="txtWrongPassword">Wrong password</string>
+    <string name="txtNoLoginTyped">No Login typed</string>
+    <string name="txtLoginOccupied">Login occupied</string>
+    <string name="txtLoginSet">Login set</string>
+    <string name="txtNoGameSelected">No game selected</string>
+    <string name="txtGameStatus">Game status</string>
+    <string name="txtPlayersCount">Players count</string>
+    <string name="txtNoGameNameTyped">No game name typed</string>
+    <string name="txtNoGameNameExists">Game Name already exists</string>
+    <string name="txtCreateGame">Create game</string>
+    <string name="txtEndOfTime">End of time</string>
+    <string name="txtDoYouReallyWantToQuit">Do You really want to quit</string>
+    <string name="txtHiding">Hiding</string>
+    <string name="txtSearching">Searching</string>
+    <string name="txtWaiting">Waiting</string>
+    <string name="txtError">Error</string>
+    <string name="txtPlayNewGame">Play new game</string>
 </resources>
