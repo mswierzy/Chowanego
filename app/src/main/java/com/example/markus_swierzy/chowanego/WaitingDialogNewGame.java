@@ -3,6 +3,7 @@ package com.example.markus_swierzy.chowanego;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,16 +25,19 @@ public class WaitingDialogNewGame extends DialogFragment {
     private String strSearcherLogin = "";
     private int nSearcherLoginID = -1;
 
+    private Resources res;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.game_dialog_quit, container, false);
 
+        res = getResources();
         activity = getActivity();
 
         Button play = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameStart);
         Button cancel = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameCancel);
 
-        getDialog().setTitle("Play new game?");
+        getDialog().setTitle(res.getString(R.string.txtPlayNewGame) + "???");
 
         strGameName = getArguments().getString("GameName");
         strLogin = getArguments().getString("Login");

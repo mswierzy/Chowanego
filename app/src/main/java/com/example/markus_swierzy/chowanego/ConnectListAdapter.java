@@ -90,7 +90,7 @@ public class ConnectListAdapter extends BaseAdapter {
             {
 
                 String strGameName = mContext.getString(R.string.txtGameName) + ": " + item.getGameName();
-                String strStatus = mContext.getString(R.string.txtGameStatus)+ ": " + item.getStatusString();
+                String strStatus = mContext.getString(R.string.txtGameStatus)+ ": " + item.getStatusString(context);
                 String strPlayers = mContext.getString(R.string.txtPlayersCount) + ": " + Integer.toString(item.getPlayersCnt());
 
                 Toast.makeText( context,

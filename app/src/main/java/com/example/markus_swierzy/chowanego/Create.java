@@ -42,6 +42,8 @@ public class Create extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
+        res = getResources();
+
         btnCreate = (Button) findViewById(R.id.btnCreate);
         btnGameName = (Button) findViewById(R.id.btnCreateGameName);
         btnPassword = (Button) findViewById(R.id.btnCreatePassword);

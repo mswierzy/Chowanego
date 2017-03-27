@@ -1,5 +1,7 @@
 package com.example.markus_swierzy.chowanego;
 
+import android.content.Context;
+
 /**
  * Created by markus_swierzy on 2017-03-14.
  */
@@ -62,16 +64,16 @@ public class GameInfo {
         this.GameID = GameID;
     }
 
-    public String getStatusString(){
+    public String getStatusString(Context context){
         switch (this.Status){
             case 0:
-                return "Chowanie";
+                return context.getString(R.string.txtHiding);
             case 1:
-                return "Szukanie";
+                return context.getString(R.string.txtSearching);
             case 2:
-                return "Oczekiwanie";
+                return context.getString(R.string.txtWaiting);
             default:
-                return "Error";
+                return context.getString(R.string.txtError);
         }
 
     }
