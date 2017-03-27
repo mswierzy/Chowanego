@@ -1,11 +1,8 @@
 package com.example.markus_swierzy.chowanego;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -53,25 +50,10 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
         this.longitudePos = longitude;
     }
 
-    // Progress Dialog
-    private ProgressDialog pDialog;
-
-    // tmp wiktor - zakomentowanie na chwile - do testu else toast
-    /*@Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        pDialog = new ProgressDialog(activity);
-        pDialog.setMessage("Creating Game..");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
-    }
-    // tmp wiktor koniec
-
     /**
      * Creating product
      */
-    //public void create(MyTaskParams... args){
+
     protected Void doInBackground(MyTaskParams... args) {
 
         String Nazwa_gry = args[0].Nazwa_gry,
@@ -118,8 +100,6 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
      * After completing background task Dismiss the progress dialog
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
-        //pDialog.dismiss();
     }
 
     public String getMessage() {

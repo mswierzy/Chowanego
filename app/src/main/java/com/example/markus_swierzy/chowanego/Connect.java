@@ -66,14 +66,6 @@ public class Connect extends AppCompatActivity {
         final EditText txtLogin = (EditText)findViewById(R.id.edConnectLogin);
         //final EditText txtSearch = (EditText)findViewById(R.id.edConnectSearch);
 
-
-        /*
-            Utworzenie listy gier
-        */
-
-
-// tutaj zrobic konstruktor z przekazaniem activity i z przekazaniem GameInfoList
-
         GetAllGames games = new GetAllGames(GameInfoList);
         try {
             games.execute().get();

@@ -25,7 +25,6 @@ public class CreateDialog extends DialogFragment {
     private String strGameName = "";
     private String strLogin = "";
     private String strPassword = "";
-    //private boolean bIsPassword = false;
     private int nSearchTime = 30;
     private int nHideTime = 10;
     private double nLatitude;
@@ -56,7 +55,6 @@ public class CreateDialog extends DialogFragment {
         nSearchTime = getArguments().getInt("SearchTime");
         nLatitude = getArguments().getDouble("nLatitude");
         nLongitude = getArguments().getDouble("nLongitude");
-        //bIsPassword = getArguments().getBoolean("IsPassword");
 
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
