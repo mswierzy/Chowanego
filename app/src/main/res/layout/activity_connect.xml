@@ -42,6 +42,12 @@
                 android:id="@+id/edConnectSearch" />
         </TableRow>
     </TableLayout>
+    <Button
+        android:text="@string/txtPlay"
+        android:id="@+id/btnConnectPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
     <LinearLayout android:weightSum="1">
         <ListView
             android:layout_height="300sp"
@@ -50,10 +56,4 @@
             android:layout_weight="1">
         </ListView>
     </LinearLayout>
-    <Button
-        android:text="@string/txtPlay"
-        android:id="@+id/btnConnectPlay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
 </TableLayout>

@@ -12,6 +12,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class Create extends AppCompatActivity {
 
     private String strGameName = "";
@@ -36,6 +62,9 @@ public class Create extends AppCompatActivity {
     EditText edSearchTime;
 
     Resources res;
+
+    double nLatitude = CHMainMenu.latitude;
+    double nLongitude = CHMainMenu.longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +115,9 @@ public class Create extends AppCompatActivity {
                     args.putString("Password", strPassword);
                     args.putInt("SearchTime", nSearchTime);
                     args.putInt("HideTime", nHideTime);
-                    args.putBoolean("IsPassword", bIsPassword);
+                 //   args.putBoolean("IsPassword", bIsPassword);
+                    args.putDouble("Latitude", nLatitude);
+                    args.putDouble("Longitude", nLongitude);
                     dialogFragment.setArguments(args);
 
                     dialogFragment.show(fm, "Create");
@@ -107,7 +138,7 @@ public class Create extends AppCompatActivity {
                     strGameName = "";
                 }else {
                     strGameName = tmpGameName;
-                    toast(res.getString(R.string.txtLogin) + ": " + strGameName);
+                    toast(res.getString(R.string.txtGameName) + ": " + strGameName);
                 }
 
             }
@@ -138,12 +169,12 @@ public class Create extends AppCompatActivity {
                 if(tmpLogin.isEmpty()){
                     toast(res.getString(R.string.txtNoLoginTyped));
                     strLogin = "";
-                }else if(tmpLogin.equals(strOccupiedGameName)){
+                }else if(tmpLogin.equals(strOccupiedLogin)){
                     toast(res.getString(R.string.txtLoginOccupied));
                     strLogin = "";
                 }else {
                     strLogin = tmpLogin;
-                    toast(res.getString(R.string.txtLogin) + ": " + strGameName);
+                    toast(res.getString(R.string.txtLogin) + ": " + strLogin);
                 }
             }
         });

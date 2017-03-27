@@ -2,6 +2,7 @@ package com.example.markus_swierzy.chowanego;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by markus_swierzy on 2017-03-22.
@@ -20,13 +25,16 @@ public class CreateDialog extends DialogFragment {
     private String strGameName = "";
     private String strLogin = "";
     private String strPassword = "";
-    private boolean bIsPassword = false;
+    //private boolean bIsPassword = false;
     private int nSearchTime = 30;
     private int nHideTime = 10;
+    private double nLatitude;
+    private double nLongitude;
     private int nGameID = -1;
     private int nLoginID = -1;
 
     Resources res;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +54,9 @@ public class CreateDialog extends DialogFragment {
         strLogin = getArguments().getString("Login");
         nHideTime = getArguments().getInt("HideTime");
         nSearchTime = getArguments().getInt("SearchTime");
-        bIsPassword = getArguments().getBoolean("IsPassword");
+        nLatitude = getArguments().getDouble("nLatitude");
+        nLongitude = getArguments().getDouble("nLongitude");
+        //bIsPassword = getArguments().getBoolean("IsPassword");
 
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,19 +75,60 @@ public class CreateDialog extends DialogFragment {
                 nGameID = 12;
                 nLoginID = 3;
 
-                i.putExtra("GameName", strGameName);
-                i.putExtra("GameID", nGameID);
-                i.putExtra("Login", strLogin);
-                i.putExtra("LoginID", nLoginID);
 
-                activity.startActivity(i);
-                activity.finish();
+                String Nazwa_gry = strGameName;
+                String Haslo_gry = strPassword;
+                String Login = strLogin;
+                String Czas_szukania = Integer.toString(nSearchTime);
+                String Czas_ukrycia = Integer.toString(nHideTime);
+                String Latitude = Double.toString(nLatitude);
+                String Longitude = Double.toString(nLongitude);
+
+                // TODO: pomyslec i moze dodac ifa ze jezeli ktores pole puste to od razu info ze poprawic i nie przechodzi do wykonywania 3 linijek ktore sa nizej
+
+                MyTaskParams args = new MyTaskParams(Nazwa_gry, Haslo_gry, Login, Czas_szukania, Czas_ukrycia, Latitude, Longitude);
+                CreateNewGame newGame = new CreateNewGame(activity, Latitude, Longitude);
+                try {
+                    newGame.execute(args).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                //toast(newGame.getMessage());
+
+// TODO: tutaj dodać polaczenie z serwerem i wysylanie danych (rekordu) do bazy, i zrobic pobieranie ID_Gry z bazy i przepisac to do zmiennej nGameID i id gracza szukającego z bazy do nLoginID
+
+
+                if (newGame.getSuccess() == 1 ){
+                    toast(newGame.getMessage());
+                    nGameID = newGame.getGameID();
+                    nLoginID = newGame.getLoginID();
+                    activity.startActivity(i);
+                    activity.finish();
+                }
+                else{
+                    toast(newGame.getMessage());
+                    dismiss();
+                }
+
+                i.putExtra("GameName", strGameName);
+                i.putExtra("Login", strLogin);
+                // TODO: tutaj pobierac te zmienne z bazy
+                i.putExtra("GameID", nGameID);
+                i.putExtra("LoginID", nLoginID);
             }
         });
 
         return rootView;
     }
 
-
+    private void toast( String text )
+    {
+        Toast.makeText( activity,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
+    }
 
 }
