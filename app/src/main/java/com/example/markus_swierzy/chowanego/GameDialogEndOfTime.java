@@ -40,7 +40,7 @@ public class GameDialogEndOfTime extends DialogFragment {
             @Override
             public void onClick(View v){
                 Activity activity = getActivity();
-                Intent i = new Intent(activity, Waiting.class);
+                Intent i = new Intent(activity, RecreateGame.class);
                 i.putExtra("GameName", strGameName);
                 i.putExtra("Login", strLogin);
                 i.putExtra("GameID", nGameID);

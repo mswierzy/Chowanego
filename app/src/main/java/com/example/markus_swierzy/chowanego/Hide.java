@@ -116,6 +116,17 @@ public class Hide  extends AppCompatActivity {
         dialogFragment.show(fm, "Quit Game");
     }
 
+    public void EndOfTime(){
+        FragmentManager fm = getFragmentManager();
+        ConnectDialogNoPassword dialogFragment = new ConnectDialogNoPassword();
+        Bundle args = new Bundle();
+        args.putInt("GameID", nGameID);
+        args.putString("GameName", strGameName);
+        args.putString("Login", strLogin);
+        args.putInt("LoginID", nLoginID);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(fm, "Start searching");
+    }
     /*
         Odliczanie zegara w dol
     */
@@ -136,14 +147,7 @@ public class Hide  extends AppCompatActivity {
                     + String.format("%03d", milliseconds));
             if(timeInMilliseconds < 0){
                 customHandler.removeCallbacks(this);
-                Intent create = new Intent(Hide.this, Game.class);
-                getIntent().putExtra("GameName",strGameName);
-                getIntent().putExtra("GameID", nGameID);
-                getIntent().putExtra("Login", strLogin);
-                getIntent().putExtra("LoginID", nLoginID);
-                Hide.this.startActivity(create);
-                Hide.this.finish();
-                overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+                EndOfTime();
             }else{
                 customHandler.postDelayed(this, 0);
             }

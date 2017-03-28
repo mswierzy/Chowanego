@@ -66,7 +66,7 @@ public class WaitingDialogNewGame extends DialogFragment {
                     activity.startActivity(i);
                     activity.finish();
                 }else{
-                    Intent i = new Intent(activity, Game.class);
+                    Intent i = new Intent(activity, Hide.class);
                     i.putExtra("GameName", strGameName);
                     i.putExtra("GameID", nGameID);
                     i.putExtra("Login", strLogin);
