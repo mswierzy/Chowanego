@@ -46,4 +46,5 @@
     <string name="txtWaiting">Czekanie</string>
     <string name="txtError">Błąd</string>
     <string name="txtPlayNewGame">Zagraj jeszcze raz</string>
+    <string name="txtSetLocation">Ustaw pozycję</string>
 </resources>

@@ -45,4 +45,5 @@
     <string name="txtWaiting">Waiting</string>
     <string name="txtError">Error</string>
     <string name="txtPlayNewGame">Play new game</string>
+    <string name="txtSetLocation">Set Location</string>
 </resources>
