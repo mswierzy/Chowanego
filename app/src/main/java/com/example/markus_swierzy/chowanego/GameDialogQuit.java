@@ -18,11 +18,9 @@ import android.widget.Toast;
 
 public class GameDialogQuit extends DialogFragment {
 
-    private Activity activity;
-    private String strGameName = "";
-    private int nGameID = -1;
-    private String strLogin = "";
-    private int nLoginID = -1;
+    private OnCancelListener mCancelListener;
+    private OnExitListener mExitListener;
+
 
     Resources res;
 
@@ -31,22 +29,22 @@ public class GameDialogQuit extends DialogFragment {
         final View rootView = inflater.inflate(R.layout.game_dialog_quit, container, false);
 
         res = getResources();
-        activity = getActivity();
 
         Button exit = (Button) rootView.findViewById(R.id.btnGameDialogQuitExit);
         Button cancel = (Button) rootView.findViewById(R.id.btnGameDialogQuitCancel);
 
         getDialog().setTitle(res.getString(R.string.txtDoYouReallyWantToQuit) + "???");
-
+/*
         strGameName = getArguments().getString("GameName");
         strLogin = getArguments().getString("Login");
         nLoginID = getArguments().getInt("LoginID");
         nGameID = getArguments().getInt("GameID");
-
+*/
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OnCancel();
                 dismiss();
             }
         });
@@ -55,21 +53,47 @@ public class GameDialogQuit extends DialogFragment {
         exit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-//TODO: Wylogowanie użytkownika -> usunięcie z bazy danych
-                Intent i = new Intent(activity, CHMainMenu.class);
-                activity.startActivity(i);
-                activity.finish();
+                OnExit();
+                dismiss();
             }
         });
 
         return rootView;
     }
 
-    private void toast( String text )
-    {
-        Toast.makeText( activity,
-                String.format( "%s", text ), Toast.LENGTH_SHORT )
-                .show();
+    public void OnExit(){
+        this.mExitListener.onExit();
+    }
+
+    public void OnCancel(){
+        this.mCancelListener.onCancel();
+    }
+
+    public static interface OnExitListener {
+        public abstract void onExit();
+    }
+
+    public static interface OnCancelListener {
+        public abstract void onCancel();
+    }
+
+    // make sure the Activity implemented it
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mExitListener = (OnExitListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnExitListener");
+        }
+
+        try {
+            this.mCancelListener = (OnCancelListener) activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCancelListener");
+        }
     }
 
 }

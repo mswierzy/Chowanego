@@ -16,10 +16,8 @@ import android.widget.Button;
 
 public class GameCatchedDialog extends DialogFragment {
 
-    private String strGameName = "";
-    private int nGameID = -1;
-    private String strLogin = "";
-    private int nLoginID = -1;
+    private OnCompleteListener mListener;
+    private OnDismissListener mDismissListener;
 
     Resources res;
 
@@ -33,34 +31,60 @@ public class GameCatchedDialog extends DialogFragment {
 
         Button no = (Button) rootView.findViewById(R.id.btnGameCatchedNo);
 
-        strGameName = getArguments().getString("GameName");
-        nGameID = getArguments().getInt("GameID",-1);
-        strLogin = getArguments().getString("Login");
-        nLoginID = getArguments().getInt("LoginID", -1);
-
         no.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                OnNo();
                 dismiss();
             }
         });
+
 
         Button yes = (Button) rootView.findViewById(R.id.btnGameCatchedYes);
         yes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Activity activity = getActivity();
-                Intent i = new Intent(activity, Waiting.class);
-                i.putExtra("GameName", strGameName);
-                i.putExtra("Login", strLogin);
-                i.putExtra("GameID", nGameID);
-                i.putExtra("LoginID", nLoginID);
-                activity.startActivity(i);
-                activity.finish();
+                OnYes();
+                dismiss();
             }
         });
 
         return rootView;
+    }
+
+    public void OnYes(){
+        this.mListener.onComplete();
+    }
+
+    public void OnNo(){
+        this.mDismissListener.onDismiss();
+    }
+
+    public static interface OnCompleteListener {
+        public abstract void onComplete();
+    }
+
+    public static interface OnDismissListener {
+        public abstract void onDismiss();
+    }
+
+    // make sure the Activity implemented it
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mListener = (OnCompleteListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+        }
+
+        try {
+            this.mDismissListener = (OnDismissListener) activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnDismissListener");
+        }
     }
 }

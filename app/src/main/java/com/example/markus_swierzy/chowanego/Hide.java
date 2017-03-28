@@ -22,7 +22,7 @@ import android.widget.Toast;
  * Created by markus_swierzy on 2017-03-28.
  */
 
-public class Hide  extends AppCompatActivity {
+public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener {
 
     private String strGameName = "";
     private String strLogin = "";
@@ -76,12 +76,6 @@ public class Hide  extends AppCompatActivity {
                 // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
                 GameDialogQuit dialogFragment = new GameDialogQuit();
-                Bundle args = new Bundle();
-                args.putInt("GameID", nGameID);
-                args.putString("GameName", strGameName);
-                args.putString("Login", strLogin);
-                args.putInt("LoginID", nLoginID);
-                dialogFragment.setArguments(args);
                 dialogFragment.show(fm, "Quit Game");
             }
         });
@@ -103,28 +97,40 @@ public class Hide  extends AppCompatActivity {
                 .show();
     }
 
+    public void onExit() {
+//TODO: Wylogowanie użytkownika z bazy danych graczy
+        Intent create = new Intent(Hide.this, CHMainMenu.class);
+        Hide.this.startActivity(create);
+        Hide.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    public void onCancel() {
+
+    }
+
+    public void onOk(){
+        customHandler.removeCallbacks(DownCount);
+        Intent create = new Intent(Hide.this, Game.class);
+        create.putExtra("GameID", nGameID);
+        create.putExtra("GameName", strGameName);
+        create.putExtra("Login", strLogin);
+        create.putExtra("LoginID", nLoginID);
+        Hide.this.startActivity(create);
+        Hide.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
     @Override
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         GameDialogQuit dialogFragment = new GameDialogQuit();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        args.putInt("LoginID", nLoginID);
-        dialogFragment.setArguments(args);
         dialogFragment.show(fm, "Quit Game");
     }
 
     public void EndOfTime(){
         FragmentManager fm = getFragmentManager();
-        ConnectDialogNoPassword dialogFragment = new ConnectDialogNoPassword();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        args.putInt("LoginID", nLoginID);
-        dialogFragment.setArguments(args);
+        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
         dialogFragment.show(fm, "Start searching");
     }
     /*
@@ -149,7 +155,7 @@ public class Hide  extends AppCompatActivity {
                 customHandler.removeCallbacks(this);
                 EndOfTime();
             }else{
-                customHandler.postDelayed(this, 0);
+                customHandler.postDelayed(this, 100);
             }
         }
 

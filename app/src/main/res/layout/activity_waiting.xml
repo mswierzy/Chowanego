@@ -4,6 +4,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:columnCount="3"
+        android:rowCount="1">
+        <TextView
+            android:layout_column="0"
+            android:layout_row="0"
+            android:id="@+id/tvWaitingTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="@string/txtTimerVal"
+            android:layout_gravity="left"/>
+    </GridLayout>
     <TableRow>
         <TextView
             android:text="@string/txtGameName"

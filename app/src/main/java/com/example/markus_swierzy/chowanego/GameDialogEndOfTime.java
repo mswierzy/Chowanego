@@ -16,9 +16,8 @@ import android.widget.Button;
 
 public class GameDialogEndOfTime extends DialogFragment {
 
-    private String strGameName = "";
-    private int nGameID = -1;
-    private String strLogin = "";
+    private Activity activity;
+    private OnOkListener mOkListener;
 
     Resources res;
 
@@ -27,28 +26,40 @@ public class GameDialogEndOfTime extends DialogFragment {
         final View rootView = inflater.inflate(R.layout.game_dialog_end_of_time, container, false);
 
         res = getResources();
+        activity = getActivity();
 
         getDialog().setTitle(res.getString(R.string.txtEndOfTime) + "!!!");
 
         Button ok = (Button) rootView.findViewById(R.id.btnGameEndOfTimeOk);
 
-        strGameName = getArguments().getString("GameName");
-        nGameID = getArguments().getInt("GameID",-1);
-        strLogin = getArguments().getString("Login");
-
         ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Activity activity = getActivity();
-                Intent i = new Intent(activity, RecreateGame.class);
-                i.putExtra("GameName", strGameName);
-                i.putExtra("Login", strLogin);
-                i.putExtra("GameID", nGameID);
-                activity.startActivity(i);
-                activity.finish();
+
             }
         });
 
         return rootView;
+    }
+
+    public void OnOk(){
+        this.mOkListener.onOk();
+    }
+
+
+    public static interface OnOkListener {
+        public abstract void onOk();
+    }
+
+    // make sure the Activity implemented it
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mOkListener = (OnOkListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnOkListener");
+        }
     }
 }

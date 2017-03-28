@@ -21,14 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Hide"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".CHMainMenu"
             android:screenOrientation="portrait" />
-        <activity android:name=".Game"
-            android:screenOrientation="portrait"/>
         <activity android:name=".Connect"
             android:screenOrientation="portrait"/>
         <activity android:name=".Create"
@@ -38,6 +34,13 @@
         <activity android:name=".Waiting"
             android:screenOrientation="portrait"/>
         <activity android:name=".GameSearcher"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Hide"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RecreateGame"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Game"
             android:screenOrientation="portrait"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

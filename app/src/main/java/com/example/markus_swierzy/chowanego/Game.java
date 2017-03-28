@@ -1,16 +1,17 @@
 package com.example.markus_swierzy.chowanego;
 
-import android.app.FragmentManager;
-import android.content.Context;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -19,8 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Game extends AppCompatActivity implements SensorEventListener {
+import static android.content.Context.SENSOR_SERVICE;
 
+public class Game extends Activity implements SensorEventListener, GameCatchedDialog.OnCompleteListener, GameCatchedDialog.OnDismissListener, GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener{
+
+    private boolean bEndOfTime = false;
     private String strGameName = "";
     private String strLogin = "";
     private int nGameID = -1;
@@ -54,6 +58,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         Button catched = (Button) findViewById(R.id.btnGameCatched);
         TextView txtGameName = (TextView) findViewById(R.id.tvGameName);
         TextView txtLogin = (TextView) findViewById(R.id.txtGameLogin);
+        timerValue = (TextView) findViewById(R.id.tvGameTimer);
 
         strGameName = getIntent().getStringExtra("GameName");
         nGameID = getIntent().getIntExtra("GameID",-1);
@@ -67,11 +72,12 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
+        customHandler.postDelayed(StartNewActivity, SearchTime);
         /*
             Kompas
          */
         image = (ImageView) findViewById(R.id.imageViewCompass);
-        timerValue = (TextView) findViewById(R.id.tvGameTimer);
+
 
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.tvHeading);
@@ -83,15 +89,45 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             @Override
             public void onClick(View v) {
                 // Dolacz do gry!!!!
-                FragmentManager fm = getFragmentManager();
+               FragmentManager fm = getFragmentManager();
                 GameCatchedDialog dialogFragment = new GameCatchedDialog();
-                Bundle args = new Bundle();
-                args.putInt("GameID", nGameID);
-                args.putString("GameName", strGameName);
-                dialogFragment.setArguments(args);
                 dialogFragment.show(fm, "Catched");
             }
         });
+    }
+
+    public void onComplete() {
+        customHandler.removeCallbacks(DownCount);
+        customHandler.removeCallbacks(StartNewActivity);
+        OpenWaitingActivity();
+    }
+
+    public void onDismiss() {
+
+    }
+
+    public void onExit() {
+//TODO: Wylogowanie użytkownika z bazy danych graczy
+        Intent create = new Intent(Game.this, CHMainMenu.class);
+        Game.this.startActivity(create);
+        Game.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    public void onCancel() {
+
+    }
+
+    public void onOk(){
+        customHandler.removeCallbacks(DownCount);
+        Intent create = new Intent(Game.this, RecreateGame.class);
+        create.putExtra("GameID", nGameID);
+        create.putExtra("GameName", strGameName);
+        create.putExtra("Login", strLogin);
+        create.putExtra("LoginID", nLoginID);
+        Game.this.startActivity(create);
+        Game.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
     }
 
     private void toast( String text )
@@ -105,20 +141,39 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         GameDialogQuit dialogFragment = new GameDialogQuit();
+        dialogFragment.show(fm, "Quit Game");
+    }
+
+    private void OpenWaitingActivity(){
+        Intent create = new Intent(Game.this, Waiting.class);
+        create.putExtra("GameID", nGameID);
+        create.putExtra("GameName", strGameName);
+        create.putExtra("Login", strLogin);
+        create.putExtra("LoginID", nLoginID);
+        Game.this.startActivity(create);
+        Game.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    private void OpenRecreateGameActivity(){
+        Intent create = new Intent(Game.this, RecreateGame.class);
+        Game.this.startActivity(create);
+        Game.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+    /*
+        Okno wyswietlane przy koncu czasu
+    */
+    public void EndOfTime(){
+        FragmentManager fm = getFragmentManager();
+        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
         Bundle args = new Bundle();
         args.putInt("GameID", nGameID);
         args.putString("GameName", strGameName);
         args.putString("Login", strLogin);
         args.putInt("LoginID", nLoginID);
         dialogFragment.setArguments(args);
-        dialogFragment.show(fm, "Quit Game");
-    }
-
-    /*
-        Okno wyswietlane przy koncu czasu
-    */
-    public void EndOfTime(){
-
+        dialogFragment.show(fm, "End of Time");
     }
 
     /*
@@ -127,6 +182,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private Runnable DownCount = new Runnable() {
 
         public void run() {
+        if(bEndOfTime == false)  {
 
             timeInMilliseconds = SearchTime - (SystemClock.uptimeMillis() - startTime);
 
@@ -139,23 +195,26 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             timerValue.setText("" + mins + ":"
                     + String.format("%02d", secs) + ":"
                     + String.format("%03d", milliseconds));
-            if(timeInMilliseconds < 0){
+            if (timeInMilliseconds < 0) {
+                bEndOfTime = true;
                 /*
                 Koniec czasu gry
                  */
                 customHandler.removeCallbacks(this);
-                FragmentManager fm = getFragmentManager();
-                GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
-                Bundle args = new Bundle();
-                args.putInt("GameID", nGameID);
-                args.putString("GameName", strGameName);
-                args.putString("Login", strLogin);
-                args.putInt("LoginID", nLoginID);
-                dialogFragment.setArguments(args);
-                dialogFragment.show(fm, "End of Time");
-            }else{
-                customHandler.postDelayed(this, 0);
+
+            } else {
+                customHandler.postDelayed(this, 100);
             }
+        }
+        }
+
+    };
+
+    private Runnable StartNewActivity = new Runnable() {
+
+        public void run() {
+            //EndOfTime();
+            OpenRecreateGameActivity();
         }
 
     };
@@ -209,4 +268,6 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // not in use
     }
+
+
 }
