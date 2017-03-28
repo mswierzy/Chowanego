@@ -63,9 +63,9 @@ public class ConnectDialogPassword extends DialogFragment {
                     toast(res.getString(R.string.txtNoPasswordTyped));
                 }else {
                     if(strTypedPassword.equals(strPassword)){
-                        // Stworz ID gracza
+//TODO: Dodanie nowego użytkownika do bazy danych z jego aktualną pozycją
                         nLoginID = 5;
-                        Intent i = new Intent(activity, Game.class);
+                        Intent i = new Intent(activity, Hide.class);
                         i.putExtra("GameName", strGameName);
                         i.putExtra("GameID", nGameID);
                         i.putExtra("Login", strLogin);

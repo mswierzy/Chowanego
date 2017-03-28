@@ -32,7 +32,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private TextView timerValue;
     private long startTime = 0L;
     private Handler customHandler = new Handler();
-    private long HideTime = 100000L;
+    private long SearchTime = 100000L;
 
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
@@ -62,6 +62,8 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
+//TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
+        SearchTime = 20000L;
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
@@ -116,48 +118,17 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         Okno wyswietlane przy koncu czasu
     */
     public void EndOfTime(){
-        FragmentManager fm = getFragmentManager();
-        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        args.putInt("LoginID", nLoginID);
-        dialogFragment.setArguments(args);
-        dialogFragment.show(fm, "End of Time");
+
     }
 
     /*
         Odliczanie zegara do gory
     */
-    private Runnable UpCount = new Runnable() {
-
-        public void run() {
-
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
-
-            updatedTime = timeSwapBuff + timeInMilliseconds;
-
-            int secs = (int) (updatedTime / 1000);
-            int mins = secs / 60;
-            secs = secs % 60;
-            int milliseconds = (int) (updatedTime % 1000);
-            timerValue.setText("" + mins + ":"
-                    + String.format("%02d", secs) + ":"
-                    + String.format("%03d", milliseconds));
-            customHandler.postDelayed(this, 0);
-        }
-
-    };
-
-    /*
-        Odliczanie zegara w dol
-    */
     private Runnable DownCount = new Runnable() {
 
         public void run() {
 
-            timeInMilliseconds = HideTime - (SystemClock.uptimeMillis() - startTime);
+            timeInMilliseconds = SearchTime - (SystemClock.uptimeMillis() - startTime);
 
             updatedTime = timeSwapBuff + timeInMilliseconds;
 
@@ -168,10 +139,27 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             timerValue.setText("" + mins + ":"
                     + String.format("%02d", secs) + ":"
                     + String.format("%03d", milliseconds));
-            customHandler.postDelayed(this, 0);
+            if(timeInMilliseconds < 0){
+                /*
+                Koniec czasu gry
+                 */
+                customHandler.removeCallbacks(this);
+                FragmentManager fm = getFragmentManager();
+                GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
+                Bundle args = new Bundle();
+                args.putInt("GameID", nGameID);
+                args.putString("GameName", strGameName);
+                args.putString("Login", strLogin);
+                args.putInt("LoginID", nLoginID);
+                dialogFragment.setArguments(args);
+                dialogFragment.show(fm, "End of Time");
+            }else{
+                customHandler.postDelayed(this, 0);
+            }
         }
 
     };
+
     @Override
     protected void onResume() {
         super.onResume();

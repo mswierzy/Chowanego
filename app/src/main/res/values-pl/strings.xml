@@ -47,4 +47,5 @@
     <string name="txtError">Błąd</string>
     <string name="txtPlayNewGame">Zagraj jeszcze raz</string>
     <string name="txtSetLocation">Ustaw pozycję</string>
+    <string name="txtNewLocation">Nowa lokalizacja</string>
 </resources>

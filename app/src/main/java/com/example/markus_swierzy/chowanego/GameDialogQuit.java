@@ -36,7 +36,7 @@ public class GameDialogQuit extends DialogFragment {
         Button exit = (Button) rootView.findViewById(R.id.btnGameDialogQuitExit);
         Button cancel = (Button) rootView.findViewById(R.id.btnGameDialogQuitCancel);
 
-        getDialog().setTitle(res.getString(R.string.txtConnectDialogPassword) + "???");
+        getDialog().setTitle(res.getString(R.string.txtDoYouReallyWantToQuit) + "???");
 
         strGameName = getArguments().getString("GameName");
         strLogin = getArguments().getString("Login");
@@ -55,9 +55,7 @@ public class GameDialogQuit extends DialogFragment {
         exit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                /*
-                    Miejsce na wylogowanie
-                 */
+//TODO: Wylogowanie użytkownika -> usunięcie z bazy danych
                 Intent i = new Intent(activity, CHMainMenu.class);
                 activity.startActivity(i);
                 activity.finish();

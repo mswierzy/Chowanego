@@ -43,7 +43,7 @@ public class ConnectDialog extends DialogFragment {
             @Override
             public void onClick(View v){
 
-                Intent i = new Intent(activity, Game.class);
+                Intent i = new Intent(activity, Hide.class);
                 i.putExtra("GameName", strGameName);
                 i.putExtra("GameID", nGameID);
                 activity.startActivity(i);

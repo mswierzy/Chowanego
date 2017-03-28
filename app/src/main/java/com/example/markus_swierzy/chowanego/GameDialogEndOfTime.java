@@ -24,7 +24,7 @@ public class GameDialogEndOfTime extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.game_catched_dialog, container, false);
+        final View rootView = inflater.inflate(R.layout.game_dialog_end_of_time, container, false);
 
         res = getResources();
 
