@@ -17,35 +17,27 @@ import android.widget.Toast;
 
 public class WaitingDialogNewGame extends DialogFragment {
 
-    private Activity activity;
-    private String strGameName = "";
-    private int nGameID = -1;
-    private String strLogin = "";
-    private int nLoginID = -1;
-    private String strSearcherLogin = "";
-    private int nSearcherLoginID = -1;
+
+    private OnCancelListener mCancelListener;
+    private OnPlayListener mPlayListener;
 
     private Resources res;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.game_dialog_quit, container, false);
+        final View rootView = inflater.inflate(R.layout.waiting_dialog_new_game, container, false);
 
         res = getResources();
-        activity = getActivity();
 
         Button play = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameStart);
         Button cancel = (Button) rootView.findViewById(R.id.btnWaitingDialogNewGameCancel);
 
         getDialog().setTitle(res.getString(R.string.txtPlayNewGame) + "???");
 
-        strGameName = getArguments().getString("GameName");
-        strLogin = getArguments().getString("Login");
-        nLoginID = getArguments().getInt("LoginID");
-        nGameID = getArguments().getInt("GameID");
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OnCancel();
                 dismiss();
             }
         });
@@ -54,26 +46,8 @@ public class WaitingDialogNewGame extends DialogFragment {
         play.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                /*
-                    Rozpoczecie nowej gry
-                 */
-                if (nLoginID == nSearcherLoginID){
-                    Intent i = new Intent(activity, GameSearcher.class);
-                    i.putExtra("GameName", strGameName);
-                    i.putExtra("GameID", nGameID);
-                    i.putExtra("Login", strLogin);
-                    i.putExtra("LoginID", nLoginID);
-                    activity.startActivity(i);
-                    activity.finish();
-                }else{
-                    Intent i = new Intent(activity, Hide.class);
-                    i.putExtra("GameName", strGameName);
-                    i.putExtra("GameID", nGameID);
-                    i.putExtra("Login", strLogin);
-                    i.putExtra("LoginID", nLoginID);
-                    activity.startActivity(i);
-                    activity.finish();
-                }
+                OnPlay();
+                dismiss();
             }
         });
 
@@ -87,11 +61,39 @@ public class WaitingDialogNewGame extends DialogFragment {
         return rootView;
     }
 
-    private void toast( String text )
-    {
-        Toast.makeText( activity,
-                String.format( "%s", text ), Toast.LENGTH_SHORT )
-                .show();
+    public void OnPlay(){
+        this.mPlayListener.onPlay();
+    }
+
+    public void OnCancel(){
+        this.mCancelListener.onCancel();
+    }
+
+    public static interface OnPlayListener {
+        public abstract void onPlay();
+    }
+
+    public static interface OnCancelListener {
+        public abstract void onCancel();
+    }
+
+    // make sure the Activity implemented it
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mPlayListener = (OnPlayListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnPlayListener");
+        }
+
+        try {
+            this.mCancelListener = (OnCancelListener) activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCancelListener");
+        }
     }
 
 }

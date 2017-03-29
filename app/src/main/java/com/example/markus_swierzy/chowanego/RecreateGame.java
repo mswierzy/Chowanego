@@ -2,6 +2,7 @@ package com.example.markus_swierzy.chowanego;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * Created by markus_swierzy on 2017-03-28.
  */
 
-public class RecreateGame extends Activity {
+public class RecreateGame extends Activity implements GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, WaitingDialogNewGame.OnCancelListener, WaitingDialogNewGame.OnPlayListener {
 
     private String strGameName = "";
     private int nGameID = -1;
@@ -50,12 +51,6 @@ public class RecreateGame extends Activity {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 GameDialogQuit dialogFragment = new GameDialogQuit();
-                Bundle args = new Bundle();
-                args.putInt("GameID", nGameID);
-                args.putString("GameName", strGameName);
-                args.putString("Login", strLogin);
-                args.putInt("LoginID", nLoginID);
-                dialogFragment.setArguments(args);
                 dialogFragment.show(fm, "Quit Game");
             }
         });
@@ -76,16 +71,46 @@ public class RecreateGame extends Activity {
 
     };
 
+    public void onPlay(){
+
+        int nSearcherLoginID = -1;
+        if (nLoginID == nSearcherLoginID){
+            Intent create = new Intent(RecreateGame.this, GameSearcher.class);
+            create.putExtra("GameID", nGameID);
+            create.putExtra("GameName", strGameName);
+            create.putExtra("Login", strLogin);
+            create.putExtra("LoginID", nLoginID);
+            RecreateGame.this.startActivity(create);
+            RecreateGame.this.finish();
+            overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+        }else{
+            Intent create = new Intent(RecreateGame.this, Hide.class);
+            create.putExtra("GameID", nGameID);
+            create.putExtra("GameName", strGameName);
+            create.putExtra("Login", strLogin);
+            create.putExtra("LoginID", nLoginID);
+            RecreateGame.this.startActivity(create);
+            RecreateGame.this.finish();
+            overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+        }
+    }
+
+    public void onExit() {
+//TODO: Wylogowanie użytkownika z bazy danych graczy
+        Intent create = new Intent(RecreateGame.this, CHMainMenu.class);
+        RecreateGame.this.startActivity(create);
+        RecreateGame.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    public void onCancel() {
+
+    }
+
     @Override
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         GameDialogQuit dialogFragment = new GameDialogQuit();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        args.putInt("LoginID", nLoginID);
-        dialogFragment.setArguments(args);
         dialogFragment.show(fm, "Quit Game");
     }
 }

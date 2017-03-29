@@ -55,6 +55,7 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        Button btnExit = (Button) findViewById(R.id.btnGameQuit);
         Button catched = (Button) findViewById(R.id.btnGameCatched);
         TextView txtGameName = (TextView) findViewById(R.id.tvGameName);
         TextView txtLogin = (TextView) findViewById(R.id.txtGameLogin);
@@ -89,9 +90,19 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
             @Override
             public void onClick(View v) {
                 // Dolacz do gry!!!!
-               FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getFragmentManager();
                 GameCatchedDialog dialogFragment = new GameCatchedDialog();
                 dialogFragment.show(fm, "Catched");
+            }
+        });
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dolacz do gry!!!!
+                FragmentManager fm = getFragmentManager();
+                GameDialogQuit dialogFragment = new GameDialogQuit();
+                dialogFragment.show(fm, "Quit Game");
             }
         });
     }
@@ -108,6 +119,8 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
 
     public void onExit() {
 //TODO: Wylogowanie użytkownika z bazy danych graczy
+        customHandler.removeCallbacks(DownCount);
+        customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(Game.this, CHMainMenu.class);
         Game.this.startActivity(create);
         Game.this.finish();

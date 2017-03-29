@@ -35,7 +35,8 @@ public class GameDialogEndOfTime extends DialogFragment {
         ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                OnOk();
+                dismiss();
             }
         });
 

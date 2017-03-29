@@ -69,6 +69,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
+        customHandler.postDelayed(StartNewActivity, HideTime);
 
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +100,8 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
 
     public void onExit() {
 //TODO: Wylogowanie użytkownika z bazy danych graczy
+        customHandler.removeCallbacks(DownCount);
+        customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(Hide.this, CHMainMenu.class);
         Hide.this.startActivity(create);
         Hide.this.finish();
@@ -111,6 +114,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
 
     public void onOk(){
         customHandler.removeCallbacks(DownCount);
+        customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(Hide.this, Game.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -153,13 +157,22 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
                     + String.format("%03d", milliseconds));
             if(timeInMilliseconds < 0){
                 customHandler.removeCallbacks(this);
-                EndOfTime();
             }else{
                 customHandler.postDelayed(this, 100);
             }
         }
 
     };
+
+    private Runnable StartNewActivity = new Runnable() {
+
+        public void run() {
+            //EndOfTime();
+            EndOfTime();
+        }
+
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
