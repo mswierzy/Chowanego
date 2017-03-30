@@ -67,7 +67,6 @@ public class HideSearcher extends AppCompatActivity implements GameDialogQuit.On
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
                 GameDialogQuit dialogFragment = new GameDialogQuit();
                 dialogFragment.show(fm, "Quit Game");

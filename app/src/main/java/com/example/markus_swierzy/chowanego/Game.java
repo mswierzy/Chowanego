@@ -89,7 +89,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         catched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
                 GameCatchedDialog dialogFragment = new GameCatchedDialog();
                 dialogFragment.show(fm, "Catched");
@@ -99,7 +98,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
                 GameDialogQuit dialogFragment = new GameDialogQuit();
                 dialogFragment.show(fm, "Quit Game");
@@ -141,13 +139,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         Game.this.startActivity(create);
         Game.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
-    }
-
-    private void toast( String text )
-    {
-        Toast.makeText( Game.this,
-                String.format( "%s", text ), Toast.LENGTH_SHORT )
-                .show();
     }
 
     @Override

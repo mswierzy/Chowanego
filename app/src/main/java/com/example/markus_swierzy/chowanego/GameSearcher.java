@@ -144,7 +144,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         catched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
                 GameCatchedDialog dialogFragment = new GameCatchedDialog();
                 dialogFragment.show(fm, "Catched");
