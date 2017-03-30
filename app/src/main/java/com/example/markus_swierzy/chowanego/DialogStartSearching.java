@@ -16,6 +16,7 @@ import android.widget.Button;
 public class DialogStartSearching extends DialogFragment {
 
     private Activity activity;
+    private OnOkListener mOkListener;
 
     Resources res;
 
@@ -33,10 +34,32 @@ public class DialogStartSearching extends DialogFragment {
         ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                OnOk();
                 dismiss();
             }
         });
 
         return rootView;
+    }
+
+    public void OnOk(){
+        this.mOkListener.onOk();
+    }
+
+
+    public static interface OnOkListener {
+        public abstract void onOk();
+    }
+
+    // make sure the Activity implemented it
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mOkListener = (OnOkListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnOkListener");
+        }
     }
 }

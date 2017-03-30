@@ -37,6 +37,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Hide"
             android:screenOrientation="portrait" />
+        <activity android:name=".HideSearcher"
+            android:screenOrientation="portrait" />
         <activity android:name=".RecreateGame"
             android:screenOrientation="portrait" />
         <activity

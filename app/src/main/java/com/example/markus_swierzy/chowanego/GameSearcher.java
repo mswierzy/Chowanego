@@ -47,8 +47,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private String strGameName = "";
     int nHiddenLoginPosition = 1;
 
-    private boolean bSearching = false;     //bSearching == 0 -> chowanie; bSearching == 1 -> szukanie
-
     /*
         Zmienne panelu Drawer
      */
@@ -66,7 +64,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private TextView timerValue;
     private long startTime = 0L;
     private Handler customHandler = new Handler();
-    private long HideTime = 100000L;
     private long SearchTime = 100000L;
 
     long timeInMilliseconds = 0L;
@@ -103,29 +100,19 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         txtLogin.setText(strLogin);
         txtHiddenLogin.setText(strHiddenLogin);
 
-//TODO: Pobierz czas zakończenia chowania i szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej HideTime i SearchTime
-//TODO: Jeśli czas na chowanie minął to niech HideTime = 0
+//TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
         SearchTime = 15000L;
-        HideTime = 30000L;
-
-        if(HideTime <= 0) bSearching = true;
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(Count, 0);
 
-        if(bSearching == false){
-            customHandler.postDelayed(StartSearching, HideTime);
-        }
-
-        if(bSearching == true){
 //TODO: Uzupełnij liste osobami biorącymi udział w grze
-            ListItems.add(new UserInfo("Adam", 13.5, 1));
-            ListItems.add(new UserInfo("Kasia", 18.5, 2));
-            ListItems.add(new UserInfo("Michal", 19.5, 3));
-            ListItems.add(new UserInfo("Trauta", 28.5, 4));
-        }
+        ListItems.add(new UserInfo("Adam", 13.5, 1));
+        ListItems.add(new UserInfo("Kasia", 18.5, 2));
+        ListItems.add(new UserInfo("Michal", 19.5, 3));
+        ListItems.add(new UserInfo("Trauta", 28.5, 4));
 
-        customHandler.postDelayed(StartNewActivity, HideTime + SearchTime);
+        customHandler.postDelayed(StartNewActivity, SearchTime);
         /*
             Kompas
          */
@@ -158,11 +145,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View v) {
                 // Dolacz do gry!!!!
-                if(bSearching == true){
-                    FragmentManager fm = getFragmentManager();
-                    GameCatchedDialog dialogFragment = new GameCatchedDialog();
-                    dialogFragment.show(fm, "Catched");
-                }
+                FragmentManager fm = getFragmentManager();
+                GameCatchedDialog dialogFragment = new GameCatchedDialog();
+                dialogFragment.show(fm, "Catched");
             }
         });
 
@@ -185,6 +170,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         strHiddenLogin = ListItems.get(position).strLogin;
         nHiddenLoginID = ListItems.get(position).nUserID;
         nHiddenLoginPosition = position;
+        customHandler.removeCallbacks(Count);
+        customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(GameSearcher.this, GameSearcher.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -212,9 +199,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 //TODO: Wylogowanie użytkownika z bazy danych graczy i usunięcie go z listy ListItems
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
-        if(bSearching == false){
-            customHandler.removeCallbacks(StartSearching);
-        }
         Intent create = new Intent(GameSearcher.this, CHMainMenu.class);
         GameSearcher.this.startActivity(create);
         GameSearcher.this.finish();
@@ -257,41 +241,17 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
         public void run() {
 
-        if(bSearching == false){
-            timeInMilliseconds = HideTime - (SystemClock.uptimeMillis() - startTime);
-        }else{
             timeInMilliseconds = SearchTime - (SystemClock.uptimeMillis() - startTime);
-        }
-        updatedTime = timeSwapBuff + timeInMilliseconds;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
 
-        int secs = (int) (updatedTime / 1000);
-        int mins = secs / 60;
-        secs = secs % 60;
-        int milliseconds = (int) (updatedTime % 1000);
-        timerValue.setText("" + mins + ":"
-                + String.format("%02d", secs) + ":"
-                + String.format("%03d", milliseconds));
-        customHandler.postDelayed(this, 0);
-        }
-
-    };
-
-    private Runnable StartSearching = new Runnable() {
-
-        public void run() {
-            startTime = SystemClock.uptimeMillis();
-            bSearching = true;
-//TODO: Uzupełnij liste osobami biorącymi udział w grze
-            ListItems.add(new UserInfo("Adam", 13.5, 1));
-            ListItems.add(new UserInfo("Kasia", 18.5, 2));
-            ListItems.add(new UserInfo("Michal", 19.5, 3));
-            ListItems.add(new UserInfo("Trauta", 28.5, 4));
-            adapter.notifyDataSetChanged();
-            strHiddenLogin = ListItems.get(0).strLogin;
-            nHiddenLoginID = ListItems.get(0).nUserID;
-            FragmentManager fm = getFragmentManager();
-            DialogStartSearching dialogFragment = new DialogStartSearching();
-            dialogFragment.show(fm, "Start searching");
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timerValue.setText("" + mins + ":"
+                    + String.format("%02d", secs) + ":"
+                    + String.format("%03d", milliseconds));
+            customHandler.postDelayed(this, 0);
         }
 
     };

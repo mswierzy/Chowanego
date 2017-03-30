@@ -68,7 +68,7 @@ public class CreateDialog extends DialogFragment {
             @Override
             public void onClick(View v){
 
-                Intent i = new Intent(activity, GameSearcher.class);
+                Intent i = new Intent(activity, HideSearcher.class);
 
                 String Nazwa_gry = strGameName;
                 String Haslo_gry = strPassword;

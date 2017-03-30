@@ -3,26 +3,20 @@ package com.example.markus_swierzy.chowanego;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by markus_swierzy on 2017-03-28.
+ * Created by markus_swierzy on 2017-03-30.
  */
 
-public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, DialogStartSearching.OnOkListener {
+public class HideSearcher extends AppCompatActivity implements GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, DialogStartSearching.OnOkListener {
 
     private String strGameName = "";
     private String strLogin = "";
@@ -46,16 +40,15 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hide);
+        setContentView(R.layout.activity_hide_searcher);
 
         res = getResources();
 
-        Button btnSetLocation = (Button) findViewById(R.id.btnHideSetLocation);
-        Button btnQuit = (Button) findViewById(R.id.btnHideQuit);
+        Button btnQuit = (Button) findViewById(R.id.btnHideSearcherQuit);
 
-        timerValue = (TextView) findViewById(R.id.tvHideTimer);
-        TextView txtGameName = (TextView) findViewById(R.id.tvHideName);
-        TextView txtLogin = (TextView) findViewById(R.id.txtHideLogin);
+        timerValue = (TextView) findViewById(R.id.tvHideSearcherTimer);
+        TextView txtGameName = (TextView) findViewById(R.id.tvHideSearcherName);
+        TextView txtLogin = (TextView) findViewById(R.id.txtHideSearcherLogin);
 
         strGameName = getIntent().getStringExtra("GameName");
         nGameID = getIntent().getIntExtra("GameID",-1);
@@ -80,31 +73,15 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
                 dialogFragment.show(fm, "Quit Game");
             }
         });
-
-        btnSetLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//TODO: Wpisanie nowej lokalizacji do bazy danych
-                String strNewLocation = "Tu wpisz nową lokalizację";
-                toast(res.getString(R.string.txtNewLocation) + ": " + strNewLocation);
-            }
-        });
-    }
-
-    private void toast( String text )
-    {
-        Toast.makeText( Hide.this,
-                String.format( "%s", text ), Toast.LENGTH_SHORT )
-                .show();
     }
 
     public void onExit() {
 //TODO: Wylogowanie użytkownika z bazy danych graczy
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
-        Intent create = new Intent(Hide.this, CHMainMenu.class);
-        Hide.this.startActivity(create);
-        Hide.this.finish();
+        Intent create = new Intent(HideSearcher.this, CHMainMenu.class);
+        HideSearcher.this.startActivity(create);
+        HideSearcher.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
     }
 
@@ -115,13 +92,13 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     public void onOk(){
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
-        Intent create = new Intent(Hide.this, Game.class);
+        Intent create = new Intent(HideSearcher.this, GameSearcher.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
         create.putExtra("Login", strLogin);
         create.putExtra("LoginID", nLoginID);
-        Hide.this.startActivity(create);
-        Hide.this.finish();
+        HideSearcher.this.startActivity(create);
+        HideSearcher.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
     }
 
