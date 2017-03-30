@@ -48,4 +48,5 @@
     <string name="txtPlayNewGame">Zagraj jeszcze raz</string>
     <string name="txtSetLocation">Ustaw pozycję</string>
     <string name="txtNewLocation">Nowa lokalizacja</string>
+    <string name="txtStartSearching">Zacznij szukać</string>
 </resources>

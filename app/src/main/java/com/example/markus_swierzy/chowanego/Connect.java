@@ -131,7 +131,6 @@ public class Connect extends AppCompatActivity {
                 } else if(strLogin.equals("")){
                     toast(res.getString(R.string.txtNoLoginTyped));
                 }else{
-                    //if(GameInfoList.get(nSelected).getIsPassword()) {
 
                         FragmentManager fm = getFragmentManager();
                         ConnectDialogPassword dialogFragment = new ConnectDialogPassword();
@@ -144,19 +143,6 @@ public class Connect extends AppCompatActivity {
                         dialogFragment.setArguments(args);
 
                         dialogFragment.show(fm, "Connect");
-                    //}
-//                    else{
-//                        FragmentManager fm = getFragmentManager();
-//                        ConnectDialogNoPassword dialogFragment = new ConnectDialogNoPassword ();
-//
-//                        Bundle args = new Bundle();
-//                        args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
-//                        args.putString("GameName", GameInfoList.get(nSelected).getGameName());
-//                        args.putString("Login", strLogin);
-//                        dialogFragment.setArguments(args);
-//
-//                        dialogFragment.show(fm, "Connect");
-//                    }
                 }
             }
         });

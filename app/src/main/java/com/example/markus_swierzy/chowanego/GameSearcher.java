@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * Created by markus_swierzy on 2017-03-19.
  */
 
-public class GameSearcher extends AppCompatActivity implements SensorEventListener {
+public class GameSearcher extends AppCompatActivity implements SensorEventListener, GameCatchedDialog.OnCompleteListener, GameCatchedDialog.OnDismissListener, GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener {
 
     private static String TAG = GameSearcher.class.getSimpleName();
 
@@ -45,7 +45,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private int nLoginID = -1;
     private int nHiddenLoginID = -1;
     private String strGameName = "";
-    int position = 1;
+    int nHiddenLoginPosition = 1;
+
+    private boolean bSearching = false;     //bSearching == 0 -> chowanie; bSearching == 1 -> szukanie
 
     /*
         Zmienne panelu Drawer
@@ -54,6 +56,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     RelativeLayout mDrawerPane;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    GameSearcherDrawer adapter;
 
     ArrayList<UserInfo> ListItems = new ArrayList<UserInfo>();
 
@@ -64,6 +67,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private long startTime = 0L;
     private Handler customHandler = new Handler();
     private long HideTime = 100000L;
+    private long SearchTime = 100000L;
 
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
@@ -82,6 +86,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_searcher);
 
+        Button btnExit = (Button) findViewById(R.id.btnGameSearcherQuit);
         Button catched = (Button) findViewById(R.id.btnGameSearcherCatched);
         TextView txtGameName = (TextView) findViewById(R.id.tvGameSearcherGameName);
         TextView txtLogin = (TextView) findViewById(R.id.txtGameSearcherLogin);
@@ -98,9 +103,29 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         txtLogin.setText(strLogin);
         txtHiddenLogin.setText(strHiddenLogin);
 
+//TODO: Pobierz czas zakończenia chowania i szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej HideTime i SearchTime
+//TODO: Jeśli czas na chowanie minął to niech HideTime = 0
+        SearchTime = 15000L;
+        HideTime = 30000L;
+
+        if(HideTime <= 0) bSearching = true;
 
         startTime = SystemClock.uptimeMillis();
-        customHandler.postDelayed(DownCount, 0);
+        customHandler.postDelayed(Count, 0);
+
+        if(bSearching == false){
+            customHandler.postDelayed(StartSearching, HideTime);
+        }
+
+        if(bSearching == true){
+//TODO: Uzupełnij liste osobami biorącymi udział w grze
+            ListItems.add(new UserInfo("Adam", 13.5, 1));
+            ListItems.add(new UserInfo("Kasia", 18.5, 2));
+            ListItems.add(new UserInfo("Michal", 19.5, 3));
+            ListItems.add(new UserInfo("Trauta", 28.5, 4));
+        }
+
+        customHandler.postDelayed(StartNewActivity, HideTime + SearchTime);
         /*
             Kompas
          */
@@ -113,22 +138,13 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        ListItems.add(new UserInfo("Adam", 13.5, 1));
-        ListItems.add(new UserInfo("Kasia", 18.5, 2));
-        ListItems.add(new UserInfo("Michal", 19.5, 3));
-        ListItems.add(new UserInfo("Trauta", 28.5, 4));
-
-        strHiddenLogin = ListItems.get(0).strLogin;
-        nHiddenLoginID = ListItems.get(0).nUserID;
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_game_searcher);
 
         // Populate the Navigtion Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.rlGameSearcherDrawerPane);
         mDrawerList = (ListView) findViewById(R.id.lvGameSearcherList);
-        GameSearcherDrawer adapter = new GameSearcherDrawer(this, ListItems);
+        adapter = new GameSearcherDrawer(this, ListItems);
         mDrawerList.setAdapter(adapter);
-
 
         // Drawer Item click listeners
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -142,15 +158,21 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View v) {
                 // Dolacz do gry!!!!
+                if(bSearching == true){
+                    FragmentManager fm = getFragmentManager();
+                    GameCatchedDialog dialogFragment = new GameCatchedDialog();
+                    dialogFragment.show(fm, "Catched");
+                }
+            }
+        });
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dolacz do gry!!!!
                 FragmentManager fm = getFragmentManager();
-                GameSearcherCatchedDialog dialogFragment = new GameSearcherCatchedDialog();
-                Bundle args = new Bundle();
-                args.putString("HiddenLogin", strHiddenLogin);
-                args.putInt("HiddenLoginID", nGameID);
-                args.putInt("GameID", nGameID);
-                args.putString("GameName", strGameName);
-                dialogFragment.setArguments(args);
-                dialogFragment.show(fm, "Catched");
+                GameDialogQuit dialogFragment = new GameDialogQuit();
+                dialogFragment.show(fm, "Quit Game");
             }
         });
     }
@@ -162,6 +184,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private void selectItemFromDrawer(int position) {
         strHiddenLogin = ListItems.get(position).strLogin;
         nHiddenLoginID = ListItems.get(position).nUserID;
+        nHiddenLoginPosition = position;
         Intent create = new Intent(GameSearcher.this, GameSearcher.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -172,81 +195,111 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         GameSearcher.this.finish();
     }
 
-    private void toast( String text )
-    {
-        Toast.makeText( GameSearcher.this,
-                String.format( "%s", text ), Toast.LENGTH_SHORT )
-                .show();
+    public void onComplete() {
+//TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems
+        /*
+            usuń gracza z listy ListItems
+         */
+        ListItems.remove(nHiddenLoginPosition);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void onDismiss() {
+
+    }
+
+    public void onExit() {
+//TODO: Wylogowanie użytkownika z bazy danych graczy i usunięcie go z listy ListItems
+        customHandler.removeCallbacks(Count);
+        customHandler.removeCallbacks(StartNewActivity);
+        if(bSearching == false){
+            customHandler.removeCallbacks(StartSearching);
+        }
+        Intent create = new Intent(GameSearcher.this, CHMainMenu.class);
+        GameSearcher.this.startActivity(create);
+        GameSearcher.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    public void onCancel() {
+
+    }
+
+    public void onOk(){
+        customHandler.removeCallbacks(Count);
+        Intent create = new Intent(GameSearcher.this, RecreateGame.class);
+        create.putExtra("GameID", nGameID);
+        create.putExtra("GameName", strGameName);
+        create.putExtra("Login", strLogin);
+        create.putExtra("LoginID", nLoginID);
+        GameSearcher.this.startActivity(create);
+        GameSearcher.this.finish();
+        overridePendingTransition(R.layout.fadein, R.layout.fadeout);
+    }
+
+    private void OpenRecreateGameActivity(){
+        FragmentManager fm = getFragmentManager();
+        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
+        dialogFragment.show(fm, "End of Time");
     }
 
     @Override
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
         GameDialogQuit dialogFragment = new GameDialogQuit();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        dialogFragment.setArguments(args);
         dialogFragment.show(fm, "Quit Game");
     }
 
     /*
-        Okno wyswietlane przy koncu czasu
+        Odliczanie zegara
     */
-    public void EndOfTime(){
-        FragmentManager fm = getFragmentManager();
-        GameDialogEndOfTime dialogFragment = new GameDialogEndOfTime();
-        Bundle args = new Bundle();
-        args.putInt("GameID", nGameID);
-        args.putString("GameName", strGameName);
-        args.putString("Login", strLogin);
-        dialogFragment.setArguments(args);
-        dialogFragment.show(fm, "End of Time");
-    }
-
-    /*
-        Odliczanie zegara do gory
-    */
-    private Runnable UpCount = new Runnable() {
+    private Runnable Count = new Runnable() {
 
         public void run() {
 
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+        if(bSearching == false){
+            timeInMilliseconds = HideTime - (SystemClock.uptimeMillis() - startTime);
+        }else{
+            timeInMilliseconds = SearchTime - (SystemClock.uptimeMillis() - startTime);
+        }
+        updatedTime = timeSwapBuff + timeInMilliseconds;
 
-            updatedTime = timeSwapBuff + timeInMilliseconds;
-
-            int secs = (int) (updatedTime / 1000);
-            int mins = secs / 60;
-            secs = secs % 60;
-            int milliseconds = (int) (updatedTime % 1000);
-            timerValue.setText("" + mins + ":"
-                    + String.format("%02d", secs) + ":"
-                    + String.format("%03d", milliseconds));
-            customHandler.postDelayed(this, 0);
+        int secs = (int) (updatedTime / 1000);
+        int mins = secs / 60;
+        secs = secs % 60;
+        int milliseconds = (int) (updatedTime % 1000);
+        timerValue.setText("" + mins + ":"
+                + String.format("%02d", secs) + ":"
+                + String.format("%03d", milliseconds));
+        customHandler.postDelayed(this, 0);
         }
 
     };
 
-    /*
-        Odliczanie zegara w dol
-    */
-    private Runnable DownCount = new Runnable() {
+    private Runnable StartSearching = new Runnable() {
 
         public void run() {
+            startTime = SystemClock.uptimeMillis();
+            bSearching = true;
+//TODO: Uzupełnij liste osobami biorącymi udział w grze
+            ListItems.add(new UserInfo("Adam", 13.5, 1));
+            ListItems.add(new UserInfo("Kasia", 18.5, 2));
+            ListItems.add(new UserInfo("Michal", 19.5, 3));
+            ListItems.add(new UserInfo("Trauta", 28.5, 4));
+            adapter.notifyDataSetChanged();
+            strHiddenLogin = ListItems.get(0).strLogin;
+            nHiddenLoginID = ListItems.get(0).nUserID;
+            FragmentManager fm = getFragmentManager();
+            DialogStartSearching dialogFragment = new DialogStartSearching();
+            dialogFragment.show(fm, "Start searching");
+        }
 
-            timeInMilliseconds = HideTime - (SystemClock.uptimeMillis() - startTime);
+    };
 
-            updatedTime = timeSwapBuff + timeInMilliseconds;
+    private Runnable StartNewActivity = new Runnable() {
 
-            int secs = (int) (updatedTime / 1000);
-            int mins = secs / 60;
-            secs = secs % 60;
-            int milliseconds = (int) (updatedTime % 1000);
-            timerValue.setText("" + mins + ":"
-                    + String.format("%02d", secs) + ":"
-                    + String.format("%03d", milliseconds));
-            customHandler.postDelayed(this, 0);
+        public void run() {
+            OpenRecreateGameActivity();
         }
 
     };
