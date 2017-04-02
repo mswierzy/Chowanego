@@ -29,6 +29,7 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
     private String strLogin = "";
     private int nGameID = -1;
     private int nLoginID = -1;
+    private long endSearchTime=-1L;
 
     /*
         Zmienne timera
@@ -41,6 +42,9 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+
+    // aktualny czas
+    private long unixTime;
 
     /*
         Zmienne kompasu
@@ -65,11 +69,18 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         nGameID = getIntent().getIntExtra("GameID",-1);
         strLogin = getIntent().getStringExtra("Login");
         nLoginID = getIntent().getIntExtra("LoginID",-1);
+        endSearchTime = getIntent().getLongExtra("endSearchTime",-1);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
-//TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
-        SearchTime = 20000L;
+
+        unixTime = System.currentTimeMillis();
+        SearchTime = endSearchTime - unixTime;
+        if(SearchTime < 0)
+        {
+            SearchTime = 0;
+        }
+
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);

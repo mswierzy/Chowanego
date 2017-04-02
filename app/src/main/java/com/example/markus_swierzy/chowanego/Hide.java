@@ -28,7 +28,8 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     private String strLogin = "";
     private int nGameID = -1;
     private int nLoginID = -1;
-    private long endHideTime=0L;
+    private long endHideTime=-1L;
+    private long endSearchTime=-1L;
 
     private Resources res;
     /*
@@ -44,7 +45,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     long updatedTime = 0L;
 
     // aktualny czas
-    long unixTime;
+    private long unixTime;
 
 
     @Override
@@ -66,6 +67,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
         strLogin = getIntent().getStringExtra("Login");
         nLoginID = getIntent().getIntExtra("LoginID",-1);
         endHideTime = getIntent().getLongExtra("endHideTime",-1);
+        endSearchTime = getIntent().getLongExtra("endSearchTime", -1);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
@@ -129,6 +131,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
         create.putExtra("GameName", strGameName);
         create.putExtra("Login", strLogin);
         create.putExtra("LoginID", nLoginID);
+        create.putExtra("endSearchTime", endSearchTime);
         Hide.this.startActivity(create);
         Hide.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
