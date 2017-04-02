@@ -9,11 +9,13 @@ public class GameInfo {
     private int GameID;
     private String GameName;        // Nazwa Gry
     private String Password;        // Haslo
-    private String endSearchTime;   // Koniec czasu na ukrycie
-    private String endHideTime;     // Koniec czasu na szukanie
+    private long endSearchTime;     // Koniec czasu na ukrycie
+    private long endHideTime;       // Koniec czasu na szukanie
+    //private long HideTime;        // czas ukrycia w ms
+    //private long SearchTime;      // czas szukania w ms
 
 
-    public GameInfo(int GameID, String GameName, String Password, String endHideTime, String endSearchTime){
+    public GameInfo(int GameID, String GameName, String Password, long endHideTime, long endSearchTime){
         this.GameID = GameID;
         this.GameName = GameName;
         this.Password = Password;
@@ -29,9 +31,9 @@ public class GameInfo {
 
     public int getGameID() { return this.GameID; }
 
-    public String getEndSearchTime() { return this.endSearchTime; }
+    public long getEndSearchTime() { return this.endSearchTime; }
 
-    public String getEndHideTime() { return this.endHideTime; }
+    public long getEndHideTime() { return this.endHideTime; }
 
     public void setGameName(String name){
         this.GameName = name;
@@ -45,7 +47,7 @@ public class GameInfo {
         this.GameID = GameID;
     }
 
-    public void setEndSearchTime(String endSrchT) { this.endSearchTime = endSrchT; }
+    public void setEndSearchTime(long endSrchT) { this.endSearchTime = endSrchT; }
 
-    public void setEndHideTime(String endHidT) { this.endHideTime = endHidT; }
+    public void setEndHideTime(long endHidT) { this.endHideTime = endHidT; }
 }

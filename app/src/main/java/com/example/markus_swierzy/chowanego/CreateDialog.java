@@ -25,12 +25,14 @@ public class CreateDialog extends DialogFragment {
     private String strGameName = "";
     private String strLogin = "";
     private String strPassword = "";
-    private int nSearchTime = 30;
-    private int nHideTime = 10;
+    private int nSearchTime = 30; // w minutach
+    private int nHideTime = 10; // w minutach
     private double nLatitude;
     private double nLongitude;
     private int nGameID = -1;
     private int nLoginID = -1;
+    private long endHideTime = -1; // obliczone z bazy danych
+    private long endSearchTime = -1; // obliczone z bazy danych
 
     Resources res;
 
@@ -93,6 +95,8 @@ public class CreateDialog extends DialogFragment {
                     toast(newGame.getMessage());
                     nGameID = newGame.getGameID();
                     nLoginID = newGame.getLoginID();
+                    endHideTime = newGame.getEndHideTime();
+                    endSearchTime = newGame.getEndSearchTime();
                     activity.startActivity(i);
                     activity.finish();
                 }
@@ -105,6 +109,8 @@ public class CreateDialog extends DialogFragment {
                 i.putExtra("Login", strLogin);
                 i.putExtra("GameID", nGameID);
                 i.putExtra("LoginID", nLoginID);
+                i.putExtra("endHideTime", endHideTime);
+                i.putExtra("endSearchTime", endSearchTime);
             }
         });
 

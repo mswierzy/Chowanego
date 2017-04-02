@@ -19,6 +19,8 @@ public class ConnectDialog extends DialogFragment {
     private Activity activity;
     String strGameName = "";
     int nGameID = -1;
+    private long endHideTime = -1;
+    private long endSearchTime = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +31,8 @@ public class ConnectDialog extends DialogFragment {
 
         strGameName = getArguments().getString("GameName");
         nGameID = getArguments().getInt("GameID",-1);
+        endHideTime = getArguments().getLong("endHideTime");
+        endSearchTime = getArguments().getLong("endSearchTime");
 
         dismiss.setOnClickListener(new View.OnClickListener() {
 
@@ -46,6 +50,8 @@ public class ConnectDialog extends DialogFragment {
                 Intent i = new Intent(activity, Hide.class);
                 i.putExtra("GameName", strGameName);
                 i.putExtra("GameID", nGameID);
+                i.putExtra("endHideTime", endHideTime);
+                i.putExtra("endSearchTime", endSearchTime);
                 activity.startActivity(i);
                 activity.finish();
             }

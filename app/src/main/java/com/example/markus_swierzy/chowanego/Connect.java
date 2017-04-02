@@ -140,6 +140,8 @@ public class Connect extends AppCompatActivity {
                         args.putString("GameName", GameInfoList.get(nSelected).getGameName());
                         args.putString("Login", strLogin);
                         args.putString("Password", GameInfoList.get(nSelected).getPassword());
+                        args.putLong("endHideTime", GameInfoList.get(nSelected).getEndHideTime());
+                        args.putLong("endSearchTime", GameInfoList.get(nSelected).getEndSearchTime());
                         dialogFragment.setArguments(args);
 
                         dialogFragment.show(fm, "Connect");

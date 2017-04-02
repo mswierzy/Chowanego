@@ -74,7 +74,7 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
         customHandler.postDelayed(StartNewActivity, SearchTime);
-        /*
+        /* //TODO: KOMPAS
             Kompas
          */
         image = (ImageView) findViewById(R.id.imageViewCompass);

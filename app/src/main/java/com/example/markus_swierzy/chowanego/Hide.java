@@ -28,6 +28,7 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     private String strLogin = "";
     private int nGameID = -1;
     private int nLoginID = -1;
+    private long endHideTime=0L;
 
     private Resources res;
     /*
@@ -41,6 +42,9 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+
+    // aktualny czas
+    long unixTime;
 
 
     @Override
@@ -61,11 +65,17 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
         nGameID = getIntent().getIntExtra("GameID",-1);
         strLogin = getIntent().getStringExtra("Login");
         nLoginID = getIntent().getIntExtra("LoginID",-1);
+        endHideTime = getIntent().getLongExtra("endHideTime",-1);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
-//TODO: Pobierz czas zakończenia chowania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej HideTime
-        HideTime = 10000L;
+
+        unixTime = System.currentTimeMillis();
+        HideTime = endHideTime - unixTime;
+        if(HideTime < 0)
+        {
+            HideTime = 0;
+        }
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);

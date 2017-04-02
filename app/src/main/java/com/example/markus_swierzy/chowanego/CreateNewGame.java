@@ -26,6 +26,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
     private int success;
     private int idGry;
     private int idGracza;
+    private long endHideTime;
+    private long endSearchTime;
 
     String latitudePos;// = CreateDialog.nLatitude;
     String longitudePos;// = CreateDialog.nLongitude;
@@ -38,6 +40,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_ID_GRY = "ID_Gry";
     private static final String TAG_ID_GRACZA = "ID_Gracza";
+    private static final String TAG_HIDE_TIME = "HideTime";
+    private static final String TAG_SEARCH_TIME = "SearchTime";
 
 
     /**
@@ -88,6 +92,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
             this.message = json.getString(TAG_MESSAGE);
             this.idGry = Integer.parseInt(json.getString(TAG_ID_GRY));
             this.idGracza = Integer.parseInt(json.getString(TAG_ID_GRACZA));
+            this.endHideTime = json.getLong(TAG_HIDE_TIME);
+            this.endSearchTime = json.getLong(TAG_SEARCH_TIME);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -117,4 +123,8 @@ class CreateNewGame extends AsyncTask<MyTaskParams, Void, Void> {
     public int getLoginID() {
         return this.idGracza;
     }
+
+    public long getEndHideTime() { return this.endHideTime; }
+
+    public long getEndSearchTime() { return this.endSearchTime; }
 }

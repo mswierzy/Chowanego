@@ -40,6 +40,8 @@ class GetAllGames extends AsyncTask<String, String, String> {
     private static final String TAG_ID_GRY = "ID_Gry";
     private static final String TAG_KONIEC_SZUKANIA = "Koniec_czasu_szukania";
     private static final String TAG_KONIEC_UKRYWANIA = "Koniec_czasu_ukrycia";
+    //private static final String TAG_CZAS_SZUKANIA = "Czas_szukania_ms";
+    //private static final String TAG_CZAS_UKRYWANIA = "Czas_ukrywania_ms";
 
     // products JSONArray
     JSONArray games = null;
@@ -78,8 +80,11 @@ class GetAllGames extends AsyncTask<String, String, String> {
                     int game_id = c.getInt(TAG_ID_GRY);
                     String game_name = c.getString(TAG_NAZWA_GRY);
                     String game_password = c.getString(TAG_HASLO_GRY);
-                    String game_endSearchTime = c.getString(TAG_KONIEC_SZUKANIA);
-                    String game_endHideTime = c.getString(TAG_KONIEC_UKRYWANIA);
+                    long game_endHideTime = c.getLong(TAG_KONIEC_UKRYWANIA);
+                    long game_endSearchTime = c.getLong(TAG_KONIEC_SZUKANIA);
+
+                    //long game_msHideTime = c.getLong(TAG_CZAS_UKRYWANIA);
+                    //long game_msSearchTime = c.getLong(TAG_CZAS_SZUKANIA);
 
                     GameInfoList.add(new GameInfo(game_id, game_name, game_password, game_endHideTime, game_endSearchTime));
                 }

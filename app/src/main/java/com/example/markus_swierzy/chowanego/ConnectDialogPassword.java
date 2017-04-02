@@ -24,6 +24,8 @@ public class ConnectDialogPassword extends DialogFragment {
     private String strLogin = "";
     private int nLoginID = -1;
     private String strPassword;
+    private long endHideTime = -1;
+    private long endSearchTime = -1;
 
     Resources res;
 
@@ -41,6 +43,8 @@ public class ConnectDialogPassword extends DialogFragment {
         strLogin = getArguments().getString("Login");
         nGameID = getArguments().getInt("GameID",-1);
         strPassword = getArguments().getString("Password");
+        endHideTime = getArguments().getLong("endHideTime");
+        endSearchTime = getArguments().getLong("endSearchTime");
 
         res = getResources();
 
@@ -70,6 +74,8 @@ public class ConnectDialogPassword extends DialogFragment {
                         i.putExtra("GameID", nGameID);
                         i.putExtra("Login", strLogin);
                         i.putExtra("LoginID", nLoginID);
+                        i.putExtra("endHideTime", endHideTime);
+                        i.putExtra("endSearchTime", endSearchTime);
                         activity.startActivity(i);
                         activity.finish();
                     }else {
