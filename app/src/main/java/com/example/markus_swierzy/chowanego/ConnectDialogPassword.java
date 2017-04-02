@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by markus_swierzy on 2017-03-22.
  */
@@ -26,6 +28,9 @@ public class ConnectDialogPassword extends DialogFragment {
     private String strPassword;
     private long endHideTime = -1;
     private long endSearchTime = -1;
+
+    private double Latitude = CHMainMenu.latitude;
+    private double Longitude = CHMainMenu.longitude;
 
     Resources res;
 
@@ -67,8 +72,27 @@ public class ConnectDialogPassword extends DialogFragment {
                     toast(res.getString(R.string.txtNoPasswordTyped));
                 }else {
                     if(strTypedPassword.equals(strPassword)){
-//TODO: Dodanie nowego użytkownika do bazy danych z jego aktualną pozycją
-                        nLoginID = 5;
+
+                        MyTaskParams_createPlayer args = new MyTaskParams_createPlayer(strLogin, nGameID, Latitude, Longitude);
+                        CreatePlayer newPlayer = new CreatePlayer(activity, Latitude, Longitude, strLogin, nGameID);
+
+                        try {
+                            newPlayer.execute(args).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (newPlayer.getSuccess() == 1 ) {
+                            nLoginID = newPlayer.getPlayerID();
+                        }
+                        else
+                        {
+                            toast(newPlayer.getMessage());
+                            dismiss();
+                        }
+
                         Intent i = new Intent(activity, Hide.class);
                         i.putExtra("GameName", strGameName);
                         i.putExtra("GameID", nGameID);
@@ -76,6 +100,8 @@ public class ConnectDialogPassword extends DialogFragment {
                         i.putExtra("LoginID", nLoginID);
                         i.putExtra("endHideTime", endHideTime);
                         i.putExtra("endSearchTime", endSearchTime);
+                        i.putExtra("playerLatitude", Latitude);
+                        i.putExtra("playerLongitude", Longitude);
                         activity.startActivity(i);
                         activity.finish();
                     }else {

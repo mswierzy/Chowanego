@@ -1,5 +1,6 @@
 package com.example.markus_swierzy.chowanego;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by markus_swierzy on 2017-03-28.
  */
@@ -31,6 +34,9 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     private long endHideTime=-1L;
     private long endSearchTime=-1L;
 
+    private double Latitude = CHMainMenu.latitude;
+    private double Longitude = CHMainMenu.longitude;
+
     private Resources res;
     /*
         Zmienne timera
@@ -43,6 +49,8 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+
+    String strNewLocation;
 
     // aktualny czas
     private long unixTime;
@@ -95,8 +103,26 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
         btnSetLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//TODO: Wpisanie nowej lokalizacji do bazy danych
-                String strNewLocation = "Tu wpisz nową lokalizację";
+
+                MyTaskParams_updatePlayerPosition args = new MyTaskParams_updatePlayerPosition(nGameID, Latitude, Longitude);
+                UpdatePlayerPosition newPlayerPosition = new UpdatePlayerPosition(Latitude, Longitude, nGameID);
+
+                try {
+                    newPlayerPosition.execute(args).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                if (newPlayerPosition.getSuccess() == 1 ) {
+                    strNewLocation = Latitude+" "+Longitude;
+                }
+                else
+                {
+                    toast("Błąd aktualizacji pozycji");
+                }
+
                 toast(res.getString(R.string.txtNewLocation) + ": " + strNewLocation);
             }
         });
