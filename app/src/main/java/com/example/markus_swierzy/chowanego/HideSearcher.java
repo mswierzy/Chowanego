@@ -98,8 +98,6 @@ public class HideSearcher extends AppCompatActivity implements GameDialogQuit.On
 
 
     public void onExit() {
-//TODO: Wylogowanie użytkownika z bazy danych graczy
-        // TODO: sprawdzic czy to dziala tutaj...
 
         MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
         DeletePlayer delPlayer = new DeletePlayer(nLoginID);

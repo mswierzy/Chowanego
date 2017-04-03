@@ -1,0 +1,16 @@
+TODO:
+
+UKRYWAJACY SIE:
+
+Game.java - usunac kompas
+
+
+SZUKAJACY:
+
+
+HideSearcher.java - putExtra czy jakos tak, przekazywanie danych typu nazwa gry, nLoginId itd, odkomentowac obliczanie czasu
+
+GameSearcher.java - obliczanie czasu, UZUPELNIANIE LISTY OSOBAMI BIARACYMI UDZIAL W GRZE (chyba z bazy danych pobierac i dodawac jakims forem)
+                    Usuniecie z listy po zlapaniu (jeszcze nie wiem jak...?), Wylogowanie uzytkownika z bazy (wiem jak) i z usuniecie z listy (nie wiem jak)
+
+Waiting.java - obliczanie czasu, wylogowywanie (oba wiem jak jezeli dobrze przekazywane sa dane - musze to sprawdzic)

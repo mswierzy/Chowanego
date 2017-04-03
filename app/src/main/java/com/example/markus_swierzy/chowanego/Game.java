@@ -136,8 +136,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
     }
 
     public void onExit() {
-//TODO: Wylogowanie użytkownika z bazy danych graczy
-        //TODO: sprawdzic czy dziala poprawnie...
 
         MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
         DeletePlayer delPlayer = new DeletePlayer(nLoginID);
