@@ -1,5 +1,9 @@
 TODO:
 
+OGOLNE:
+
+moze warto poprawic (ale to juz jako pierdola na sam koniec) to zeby nie potwierdzac loginu, hasla, nazwy gry przyciskami tylko zeby sie to potwierdzalo przy nacisnieciu stworz gre i tak samo w ekranie dolaczenia do gry
+
 UKRYWAJACY SIE:
 
 Game.java - usunac kompas
