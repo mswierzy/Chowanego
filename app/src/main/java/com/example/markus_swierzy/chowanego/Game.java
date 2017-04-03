@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 import static android.content.Context.SENSOR_SERVICE;
 
 public class Game extends Activity implements SensorEventListener, GameCatchedDialog.OnCompleteListener, GameCatchedDialog.OnDismissListener, GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener{
@@ -116,6 +118,13 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         });
     }
 
+    private void toast( String text )
+    {
+        Toast.makeText( Game.this,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
+    }
+
     public void onComplete() {
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
@@ -128,6 +137,27 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
 
     public void onExit() {
 //TODO: Wylogowanie użytkownika z bazy danych graczy
+        //TODO: sprawdzic czy dziala poprawnie...
+
+        MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
+        DeletePlayer delPlayer = new DeletePlayer(nLoginID);
+
+        try {
+            delPlayer.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (delPlayer.getSuccess() == 1 ) {
+            toast(delPlayer.getMessage());
+        }
+        else
+        {
+            toast(delPlayer.getMessage());
+        }
+
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(Game.this, CHMainMenu.class);

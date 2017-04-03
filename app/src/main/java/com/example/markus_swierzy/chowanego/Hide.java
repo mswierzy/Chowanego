@@ -104,8 +104,8 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
             @Override
             public void onClick(View v) {
 
-                MyTaskParams_updatePlayerPosition args = new MyTaskParams_updatePlayerPosition(nGameID, Latitude, Longitude);
-                UpdatePlayerPosition newPlayerPosition = new UpdatePlayerPosition(Latitude, Longitude, nGameID);
+                MyTaskParams_updatePlayerPosition args = new MyTaskParams_updatePlayerPosition(nLoginID, Latitude, Longitude);
+                UpdatePlayerPosition newPlayerPosition = new UpdatePlayerPosition(Latitude, Longitude, nLoginID);
 
                 try {
                     newPlayerPosition.execute(args).get();
@@ -136,7 +136,27 @@ public class Hide  extends AppCompatActivity implements GameDialogQuit.OnCancelL
     }
 
     public void onExit() {
-//TODO: Wylogowanie użytkownika z bazy danych graczy
+    // Wylogowanie użytkownika z bazy danych graczy
+
+        MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
+        DeletePlayer delPlayer = new DeletePlayer(nLoginID);
+
+        try {
+            delPlayer.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (delPlayer.getSuccess() == 1 ) {
+            toast(delPlayer.getMessage());
+        }
+        else
+        {
+            toast(delPlayer.getMessage());
+        }
+
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(Hide.this, CHMainMenu.class);

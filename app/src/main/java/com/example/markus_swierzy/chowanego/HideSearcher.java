@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by markus_swierzy on 2017-03-30.
  */
@@ -87,8 +89,37 @@ public class HideSearcher extends AppCompatActivity implements GameDialogQuit.On
         });
     }
 
+    private void toast( String text )
+    {
+        Toast.makeText( HideSearcher.this,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
+    }
+
+
     public void onExit() {
 //TODO: Wylogowanie użytkownika z bazy danych graczy
+        // TODO: sprawdzic czy to dziala tutaj...
+
+        MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
+        DeletePlayer delPlayer = new DeletePlayer(nLoginID);
+
+        try {
+            delPlayer.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (delPlayer.getSuccess() == 1 ) {
+            toast(delPlayer.getMessage());
+        }
+        else
+        {
+            toast(delPlayer.getMessage());
+        }
+
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
         Intent create = new Intent(HideSearcher.this, CHMainMenu.class);
