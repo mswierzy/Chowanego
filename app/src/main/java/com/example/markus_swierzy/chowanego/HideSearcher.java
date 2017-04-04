@@ -65,15 +65,15 @@ public class HideSearcher extends AppCompatActivity implements GameDialogQuit.On
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
 
-        /*unixTime = System.currentTimeMillis();
+        unixTime = System.currentTimeMillis();
         HideTime = endHideTime - unixTime;
         if(HideTime < 0)
         {
             HideTime = 0;
-        }*/
+        }
 //TODO: MARKUS! tutaj zobacz to... mozesz nawet odkomentowac moje, ale zostawilem Twoje =10000L zebys zobaczyl ze nawet nazwy gry i loginu brakuje...
 //TODO: Pobierz czas zakończenia chowania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej HideTime
-        HideTime = 10000L;
+        //HideTime = 10000L;
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);

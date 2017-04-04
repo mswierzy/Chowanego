@@ -70,8 +70,6 @@ public class CreateDialog extends DialogFragment {
             @Override
             public void onClick(View v){
 
-                Intent i = new Intent(activity, HideSearcher.class);
-
                 String Nazwa_gry = strGameName;
                 String Haslo_gry = strPassword;
                 String Login = strLogin;
@@ -97,6 +95,15 @@ public class CreateDialog extends DialogFragment {
                     nLoginID = newGame.getLoginID();
                     endHideTime = newGame.getEndHideTime();
                     endSearchTime = newGame.getEndSearchTime();
+
+                    Intent i = new Intent(activity, HideSearcher.class);
+                    i.putExtra("GameName", strGameName);
+                    i.putExtra("Login", strLogin);
+                    i.putExtra("GameID", nGameID);
+                    i.putExtra("LoginID", nLoginID);
+                    i.putExtra("endHideTime", endHideTime);
+                    i.putExtra("endSearchTime", endSearchTime);
+
                     activity.startActivity(i);
                     activity.finish();
                 }
@@ -105,12 +112,6 @@ public class CreateDialog extends DialogFragment {
                     dismiss();
                 }
 
-                i.putExtra("GameName", strGameName);
-                i.putExtra("Login", strLogin);
-                i.putExtra("GameID", nGameID);
-                i.putExtra("LoginID", nLoginID);
-                i.putExtra("endHideTime", endHideTime);
-                i.putExtra("endSearchTime", endSearchTime);
             }
         });
 
