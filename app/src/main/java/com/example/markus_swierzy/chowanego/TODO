@@ -7,10 +7,9 @@ moze warto poprawic (ale to juz jako pierdola na sam koniec) to zeby nie potwier
 UKRYWAJACY SIE:
 
 
-
 SZUKAJACY:
 
-GameSearcher.java - obliczanie czasu, UZUPELNIANIE LISTY OSOBAMI BIARACYMI UDZIAL W GRZE (chyba z bazy danych pobierac i dodawac jakims forem)
+GameSearcher.java - UZUPELNIANIE LISTY OSOBAMI BIARACYMI UDZIAL W GRZE (chyba z bazy danych pobierac i dodawac jakims forem)
                     Usuniecie z listy po zlapaniu (jeszcze nie wiem jak...?), Wylogowanie uzytkownika z bazy (wiem jak) i z usuniecie z listy (nie wiem jak)
 
 Waiting.java - obliczanie czasu, wylogowywanie (oba wiem jak jezeli dobrze przekazywane sa dane - musze to sprawdzic)
@@ -19,9 +18,3 @@ WAITING:
 
 Aktualizacja list co określony czas - runnable
 
-BAZA DANYCH:
-
-Dodanie 3 kolumn do tabeli graczy informujące o byciu złapanym:
-ZlapanyOdSzukajacego, ZlapanyOdUkrywajacego, Zlapany (ZlapanyOdSzukajacego && ZlapanyOdUkrywajacego = Zlapany)
-dodac w game.java na btn zlapany
-gamesearcher.java na btn zlapany
