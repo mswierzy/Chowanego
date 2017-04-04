@@ -11,22 +11,21 @@
         android:layout_width="match_parent"
         android:layout_column="0"
         android:layout_row="0"
-        android:columnCount="3"
-        android:rowCount="1">
+        android:columnCount="1"
+        android:rowCount="4">
         <TextView
             android:layout_column="0"
             android:layout_row="0"
-            android:id="@+id/tvHideSearcherTimer"
+            android:text="@string/txtGameName"
+            android:textSize="10sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="@string/txtTimerVal"
-            android:layout_gravity="left"/>
-
+            android:layout_gravity="center"/>
         <TextView
-            android:layout_column="1"
-            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_row="1"
             android:text="@string/txtGameName"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvHideSearcherName"
@@ -34,14 +33,34 @@
 
         <TextView
             android:text="@string/txtPlayerName"
-            android:layout_column="2"
-            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:text="@string/txtPlayerName"
+            android:layout_column="0"
+            android:layout_row="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtHideSearcherLogin"
-            android:layout_gravity="right"/>
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
 
     </GridLayout>
+    <TextView
+        android:layout_column="0"
+        android:layout_row="2"
+        android:id="@+id/tvHideSearcherTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="40sp"
+        android:text="@string/txtTimerVal"
+        android:layout_gravity="center"/>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_column="0"

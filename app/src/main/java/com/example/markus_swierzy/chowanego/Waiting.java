@@ -12,8 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by markus_swierzy on 2017-03-19.
@@ -76,6 +78,7 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
         customHandler.postDelayed(StartNewActivity, SearchTime);
+        customHandler.postDelayed(RefreshList, 1000);
         /*
             Wyciagnij z bazy strLoginSearcher
          */
@@ -101,14 +104,7 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         lvCatchedList.setAdapter(CatchedAdapter);
         lvToCatchList.setAdapter(ToCatchAdapter);
 
-        /*
 
-            Aktualizacja listy
-
-            CatchedList.clear();
-            CatchedList.add( "Zenon" );
-            CatchedAdapter.notifyDataSetChanged();
-         */
 
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,10 +129,35 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);
     }
 
+    private void toast( String text )
+    {
+        Toast.makeText( Waiting.this,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
+    }
+
     public void onExit() {
-//TODO: Wylogowanie użytkownika z bazy danych graczy
+        MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
+        DeletePlayer delPlayer = new DeletePlayer(nLoginID);
+
+        try {
+            delPlayer.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (delPlayer.getSuccess() == 1 ) {
+            toast(delPlayer.getMessage());
+        }
+        else
+        {
+            toast(delPlayer.getMessage());
+        }
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
+        customHandler.removeCallbacks(RefreshList);
         Intent create = new Intent(Waiting.this, CHMainMenu.class);
         Waiting.this.startActivity(create);
         Waiting.this.finish();
@@ -149,6 +170,7 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
 
     public void onOk(){
         customHandler.removeCallbacks(DownCount);
+        customHandler.removeCallbacks(RefreshList);
         Intent create = new Intent(Waiting.this, RecreateGame.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -200,6 +222,37 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         public void run() {
             //EndOfTime();
             OpenRecreateGameActivity();
+        }
+
+    };
+
+    private Runnable RefreshList = new Runnable() {
+
+        public void run() {
+
+            CatchedList.clear();
+            ToCatchList.clear();
+
+// TODO: Uzupełnienie listy CatchedList osobami złapanymi a ToCatchList osobami do złapania, a jeśli wszyscy złapani to koniec
+            CatchedList.add("Marek");
+            CatchedList.add("Michal");
+            CatchedList.add("Olek");
+            CatchedList.add("Ania");
+
+            ToCatchList.add("Konrad");
+            ToCatchList.add("Stasiu");
+            ToCatchList.add("Marcin");
+            CatchedList.add( "Login Gracza" );
+            CatchedAdapter.notifyDataSetChanged();
+
+            ToCatchList.add( "Login Gracza" );
+            ToCatchAdapter.notifyDataSetChanged();
+
+            if (CatchedList.isEmpty()){
+                OpenRecreateGameActivity();
+            } else {
+                customHandler.postDelayed(this, 1000);
+            }
         }
 
     };

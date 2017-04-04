@@ -86,7 +86,7 @@ public class CHMainMenu extends Activity {
             @Override
             public void onClick(View v) {
                 // Info
-                Intent info = new Intent(CHMainMenu.this, Info.class);
+                Intent info = new Intent(CHMainMenu.this, Waiting.class);
                 CHMainMenu.this.startActivity(info);
                 CHMainMenu.this.finish();
                 //overridePendingTransition(R.layout.fadein, R.layout.fadeout);

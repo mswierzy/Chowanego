@@ -183,9 +183,11 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
     public void onComplete() {
 //TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems
+//TODO: Dodaj informacje o zlapaniu do bazy
         /*
             usuń gracza z listy ListItems
          */
+        int nLoginID = ListItems.get(nHiddenLoginPosition).nUserID;
         ListItems.remove(nHiddenLoginPosition);
         adapter.notifyDataSetChanged();
     }

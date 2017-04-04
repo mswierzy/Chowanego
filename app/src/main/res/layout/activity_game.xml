@@ -11,22 +11,21 @@
         android:layout_width="match_parent"
         android:layout_column="0"
         android:layout_row="0"
-        android:columnCount="3"
-        android:rowCount="1">
+        android:columnCount="1"
+        android:rowCount="4">
         <TextView
             android:layout_column="0"
             android:layout_row="0"
-            android:id="@+id/tvGameTimer"
+            android:text="@string/txtGameName"
+            android:textSize="10sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="@string/txtTimerVal"
-            android:layout_gravity="left"/>
-
+            android:layout_gravity="center"/>
         <TextView
-            android:layout_column="1"
-            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_row="1"
             android:text="@string/txtGameName"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvGameName"
@@ -34,38 +33,34 @@
 
         <TextView
             android:text="@string/txtPlayerName"
-            android:layout_column="2"
-            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:text="@string/txtPlayerName"
+            android:layout_column="0"
+            android:layout_row="3"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtGameLogin"
-            android:layout_gravity="right"/>
+            android:layout_gravity="center"/>
 
     </GridLayout>
-    <RelativeLayout
+    <TextView
         android:layout_column="0"
         android:layout_row="1"
-        android:layout_width="match_parent"
-        android:layout_height="300sp">
-
-        <TextView
-            android:id="@+id/tvHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="20dp"
-            android:text="Heading: 0.0" />
-
-        <ImageView
-            android:id="@+id/imageViewCompass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvHeading"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/img_compass" />
-
-    </RelativeLayout>
+        android:id="@+id/tvGameTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="40sp"
+        android:text="@string/txtTimerVal"
+        android:layout_gravity="center"/>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_column="0"

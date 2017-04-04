@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-public class Game extends Activity implements SensorEventListener, GameCatchedDialog.OnCompleteListener, GameCatchedDialog.OnDismissListener, GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener{
+public class Game extends Activity implements GameCatchedDialog.OnCompleteListener, GameCatchedDialog.OnDismissListener, GameDialogQuit.OnCancelListener, GameDialogQuit.OnExitListener, GameDialogEndOfTime.OnOkListener{
 
     private boolean bEndOfTime = false;
     private String strGameName = "";
@@ -47,14 +47,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
 
     // aktualny czas
     private long unixTime;
-
-    /*
-        Zmienne kompasu
-     */
-    private ImageView image;
-    private float currentDegree = 0f;
-    private SensorManager mSensorManager;
-    TextView tvHeading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +79,6 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
         customHandler.postDelayed(StartNewActivity, SearchTime);
-        /* //TODO: KOMPAS
-            Kompas
-         */
-        image = (ImageView) findViewById(R.id.imageViewCompass);
-
-
-        // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.tvHeading);
-
-        // initialize your android device sensor capabilities
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         catched.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +109,7 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
     public void onComplete() {
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
+//TODO: Dodaj informacje o zlapaniu do bazy
         OpenWaitingActivity();
     }
 
@@ -263,54 +245,8 @@ public class Game extends Activity implements SensorEventListener, GameCatchedDi
     };
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        // for the system's orientation sensor registered listeners
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
-
-        // to stop the listener and save battery
-        mSensorManager.unregisterListener(this);
     }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[0]);
-
-        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
-
-        // create a rotation animation (reverse turn degree degrees)
-        RotateAnimation ra = new RotateAnimation(
-                currentDegree,
-                -degree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-
-        // how long the animation will take place
-        ra.setDuration(210);
-
-        // set the animation after the end of the reservation status
-        ra.setFillAfter(true);
-
-        // Start the animation
-        image.startAnimation(ra);
-        currentDegree = -degree;
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // not in use
-    }
-
 
 }
