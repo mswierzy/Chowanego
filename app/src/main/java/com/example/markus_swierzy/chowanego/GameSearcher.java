@@ -59,6 +59,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private double dblDistance = 0.0; // w metrach
     private double dblPreviousDistance = 0.0;
     private double dblMaxDistance = 50.0;
+    TextView tvDistance;
+    TextView tvDistanceDifference;
 
     RelativeLayout DistanceRectangle;
     /*
@@ -118,6 +120,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         TextView txtLogin = (TextView) findViewById(R.id.txtGameSearcherLogin);
         TextView txtHiddenLogin = (TextView) findViewById(R.id.tvGameSearcherPlayerToFind);
 
+        tvDistance = (TextView) findViewById(R.id.tvGameSearcherDistance);
+        tvDistanceDifference = (TextView) findViewById(R.id.tvGameSearcherDistanceDifference);
+
         strGameName = getIntent().getStringExtra("GameName");
         nGameID = getIntent().getIntExtra("GameID",-1);
         strLogin = getIntent().getStringExtra("Login");
@@ -156,9 +161,10 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         ListItems = players.getList();
 
 
-        latitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLatitude;
-        longitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLongitude;
-
+        if (!ListItems.isEmpty()){
+            latitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLatitude;
+            longitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLongitude;
+        }
 
         customHandler.postDelayed(StartNewActivity, SearchTime);
         /*
@@ -398,7 +404,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
 //TODO: Obliczenie zmiany dystansu do ukrywajacego się i zapis do dblDistance
             ChangeCompassBackgroundColor();
-            customHandler.postDelayed(this, 1000);
+            tvDistance.setText(String.valueOf(dblDistance));
+            tvDistanceDifference.setText(String.valueOf(dblPreviousDistance-dblDistance));
+            customHandler.postDelayed(this, 5000);
         }
 
     };
