@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by markus_swierzy on 2017-03-19.
@@ -46,6 +47,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private int nHiddenLoginID = -1;
     private String strGameName = "";
     int nHiddenLoginPosition = 1;
+    private long endSearchTime=-1L;
 
     /*
         Zmienne panelu Drawer
@@ -69,6 +71,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+
+    // aktualny czas
+    private long unixTime;
 
     /*
         Zmienne kompasu
@@ -94,13 +99,21 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         nLoginID = getIntent().getIntExtra("LoginID",-1);
         strHiddenLogin = getIntent().getStringExtra("HiddenLogin");
         nHiddenLoginID = getIntent().getIntExtra("HiddenLoginID",-1);
+        endSearchTime = getIntent().getLongExtra("endSearchTime",-1);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
         txtHiddenLogin.setText(strHiddenLogin);
 
+        unixTime = System.currentTimeMillis();
+        SearchTime = endSearchTime - unixTime;
+        if(SearchTime < 0)
+        {
+            SearchTime = 0;
+        }
+
 //TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
-        SearchTime = 15000L;
+        //SearchTime = 15000L;
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(Count, 0);
@@ -177,13 +190,42 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         GameSearcher.this.finish();
     }
 
+    private void toast( String text )
+    {
+        Toast.makeText( GameSearcher.this,
+                String.format( "%s", text ), Toast.LENGTH_SHORT )
+                .show();
+    }
+
     public void onComplete() {
-//TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems
-//TODO: Dodaj informacje o zlapaniu do bazy
+//TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems - gotowe -> zostawiam jako wzor!
+//TODO: Dodaj informacje o zlapaniu do bazy - SPRAWDZIC POZNIEJ CZY DZIALA!
+
+        int nIDGraczaKtoregoSzukam = ListItems.get(nHiddenLoginPosition).nUserID;
+
+        // UPDATE W BAZIE POLA O ZLAPANIU - UPDATE POCHODZI OD SZUKAJACEGO
+        MyTaskParams_updateZlapany args = new MyTaskParams_updateZlapany(nIDGraczaKtoregoSzukam);
+        UpdateZlapanyOdUkrywajacego updZlapOdSzuk = new UpdateZlapanyOdUkrywajacego(nIDGraczaKtoregoSzukam);
+
+        try {
+            updZlapOdSzuk.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (updZlapOdSzuk.getSuccess() == 1 ) {
+            toast(updZlapOdSzuk.getMessage());
+        }
+        else
+        {
+            toast(updZlapOdSzuk.getMessage());
+        }
+
         /*
             usuń gracza z listy ListItems
          */
-        int nLoginID = ListItems.get(nHiddenLoginPosition).nUserID;
         ListItems.remove(nHiddenLoginPosition);
         adapter.notifyDataSetChanged();
     }

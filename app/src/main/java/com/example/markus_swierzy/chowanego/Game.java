@@ -109,7 +109,27 @@ public class Game extends Activity implements GameCatchedDialog.OnCompleteListen
     public void onComplete() {
         customHandler.removeCallbacks(DownCount);
         customHandler.removeCallbacks(StartNewActivity);
-//TODO: Dodaj informacje o zlapaniu do bazy
+
+        // UPDATE W BAZIE POLA O ZLAPANIU - UPDATE POCHODZI OD UKRYWAJACEGO
+        MyTaskParams_updateZlapany args = new MyTaskParams_updateZlapany(nLoginID);
+        UpdateZlapanyOdUkrywajacego updZlapOdSzuk = new UpdateZlapanyOdUkrywajacego(nLoginID);
+
+        try {
+            updZlapOdSzuk.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (updZlapOdSzuk.getSuccess() == 1 ) {
+            toast(updZlapOdSzuk.getMessage());
+        }
+        else
+        {
+            toast(updZlapOdSzuk.getMessage());
+        }
+
         OpenWaitingActivity();
     }
 
