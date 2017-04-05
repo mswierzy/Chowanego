@@ -9,6 +9,6 @@
     <color name="black">#000000</color>
     <drawable name="blue_color">#03a3f3</drawable>
     <drawable name="red_color">#F30303</drawable>
-    <drawable name="red_color">#F30303</drawable>
+    <drawable name="change_color">#ffffff</drawable>
 
 </resources>
