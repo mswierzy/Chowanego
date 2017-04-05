@@ -195,6 +195,9 @@ public class Game extends Activity implements GameCatchedDialog.OnCompleteListen
         create.putExtra("GameName", strGameName);
         create.putExtra("Login", strLogin);
         create.putExtra("LoginID", nLoginID);
+        //TODO: tutaj moge przekazywac do waiting.java
+        create.putExtra("endSearchTime", endSearchTime);
+
         Game.this.startActivity(create);
         Game.this.finish();
         overridePendingTransition(R.layout.fadein, R.layout.fadeout);

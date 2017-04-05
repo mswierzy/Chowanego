@@ -280,8 +280,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     }
 
     public void onComplete() {
-//TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems - gotowe -> zostawiam jako wzor!
-
         int nIDGraczaKtoregoSzukam = ListItems.get(nHiddenLoginPosition).nUserID;
 
         // UPDATE W BAZIE POLA O ZLAPANIU - UPDATE POCHODZI OD SZUKAJACEGO
@@ -316,7 +314,30 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     }
 
     public void onExit() {
-//TODO: Wylogowanie użytkownika z bazy danych graczy i usunięcie go z listy ListItems
+
+        // usuniecie z listy
+        ListItems.remove(nHiddenLoginPosition);
+
+        // wylogowanie z bazy
+        MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
+        DeletePlayer delSearcher = new DeletePlayer(nLoginID);
+
+        try {
+            delSearcher.execute(args).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (delSearcher.getSuccess() == 1 ) {
+            toast(delSearcher.getMessage());
+        }
+        else
+        {
+            toast(delSearcher.getMessage());
+        }
+
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
         customHandler.removeCallbacks(ChangeColor);
@@ -405,10 +426,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
             dblDistance =  playerLocation.distanceTo(actLocation);
 
-//TODO: Obliczenie zmiany dystansu do ukrywajacego się i zapis do dblDistance
             ChangeCompassBackgroundColor();
-            tvDistance.setText(String.valueOf(dblDistance));
-            tvDistanceDifference.setText(String.valueOf(dblPreviousDistance-dblDistance));
+            tvDistance.setText(String.valueOf((int) Math.round(dblDistance)));
+            tvDistanceDifference.setText(String.valueOf((int) Math.round(dblPreviousDistance-dblDistance)));
             customHandler.postDelayed(this, 5000);
         }
 

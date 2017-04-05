@@ -2,18 +2,15 @@ TODO:
 
 OGOLNE:
 
-moze warto poprawic (ale to juz jako pierdola na sam koniec) to zeby nie potwierdzac loginu, hasla, nazwy gry przyciskami tylko zeby sie to potwierdzalo przy nacisnieciu stworz gre i tak samo w ekranie dolaczenia do gry
+moze warto poprawic (ale to juz jako pierdola na sam koniec) to zeby nie potwierdzac loginu, hasla, nazwy gry przyciskami,
+tylko zeby sie to potwierdzalo przy nacisnieciu stworz gre i tak samo w ekranie dolaczenia do gry
+--> ekran dodawania nowej gry i ekran dodawania ukrywajacego sie.
 
-UKRYWAJACY SIE:
+GameSearcher.java:
 
-
-SZUKAJACY:
-
-GameSearcher.java - Usuniecie z listy po zlapaniu (jeszcze nie wiem jak...?), Wylogowanie uzytkownika z bazy (wiem jak) i z usuniecie z listy (nie wiem jak)
-
-Waiting.java - obliczanie czasu, wylogowywanie (oba wiem jak jezeli dobrze przekazywane sa dane - musze to sprawdzic)
+Poprawic kolorki - przy malych predkosciach wieksza zmiana.
 
 WAITING:
 
-Aktualizacja list co określony czas - runnable
+sprawdzic jeszcze raz tylko ile tego czasu tutaj odmierza, czy faktycznie ten ktory pozostal do konca gry czy jakis inny gdzies jest nadpisany jeszcze
 

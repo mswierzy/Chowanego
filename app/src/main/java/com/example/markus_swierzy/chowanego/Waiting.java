@@ -28,6 +28,7 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
     private String strLogin = "";
     private int nLoginID = -1;
     private String strLoginSearcher = "Temp Searcher";
+    private long endSearchTime=-1L;
 
     /*
         Zmienne timera
@@ -40,6 +41,9 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+
+    // aktualny czas
+    private long unixTime;
 
     /*
         Zmienne listy
@@ -63,6 +67,7 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         nGameID = getIntent().getIntExtra("GameID",-1);
         strLogin = getIntent().getStringExtra("Login");
         nLoginID = getIntent().getIntExtra("LoginID",-1);
+        endSearchTime = getIntent().getLongExtra("endSearchTime",-1);
 
         TextView tvGameName = (TextView) findViewById(R.id.tvWaitingGameName);
         TextView tvSearcher = (TextView) findViewById(R.id.tvWaitingSearcher);
@@ -72,31 +77,44 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         lvToCatchList = (ListView) findViewById((R.id.lvWaitingToCatch));
 
         Button btnQuit = (Button) findViewById(R.id.btnWaitingQuit);
-//TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
-        SearchTime = 20000L;
+
+        unixTime = System.currentTimeMillis();
+        SearchTime = endSearchTime - unixTime;
+        if(SearchTime < 0)
+        {
+            SearchTime = 0;
+        }
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(DownCount, 0);
         customHandler.postDelayed(StartNewActivity, SearchTime);
         customHandler.postDelayed(RefreshList, 1000);
-        /*
-            Wyciagnij z bazy strLoginSearcher
-         */
 
-        tvGameName.setText(strGameName);
-        tvSearcher.setText(strLoginSearcher);
 
         CatchedList = new ArrayList<String>();
         ToCatchList = new ArrayList<String>();
 
-        CatchedList.add("Marek");
-        CatchedList.add("Michal");
-        CatchedList.add("Olek");
-        CatchedList.add("Ania");
+        GetCatched lista_zlapanych = new GetCatched(CatchedList, nGameID);
+        try {
+            lista_zlapanych.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        CatchedList = lista_zlapanych.getList();
 
-        ToCatchList.add("Konrad");
-        ToCatchList.add("Stasiu");
-        ToCatchList.add("Marcin");
+
+        GetToCatch lista_do_zlapania = new GetToCatch(ToCatchList, nGameID);
+        try {
+            lista_do_zlapania.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        ToCatchList = lista_do_zlapania.getList();
+
 
         CatchedAdapter = new ArrayAdapter<String>(this, R.layout.waiting_list_item, CatchedList);
         ToCatchAdapter = new ArrayAdapter<String>(this, R.layout.waiting_list_item, ToCatchList);
@@ -105,6 +123,18 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
         lvToCatchList.setAdapter(ToCatchAdapter);
 
 
+        GetLoginSearcher login_szukajacego = new GetLoginSearcher(nGameID);
+        try {
+            login_szukajacego.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        strLoginSearcher = login_szukajacego.getSearcherLogin();
+
+        tvGameName.setText(strGameName);
+        tvSearcher.setText(strLoginSearcher);
 
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +144,6 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
                 dialogFragment.show(fm, "Quit Game");
             }
         });
-
-
     };
 
     private void OpenRecreateGameActivity(){
@@ -233,19 +261,28 @@ public class Waiting extends Activity implements GameDialogQuit.OnCancelListener
             CatchedList.clear();
             ToCatchList.clear();
 
-// TODO: Uzupełnienie listy CatchedList osobami złapanymi a ToCatchList osobami do złapania, a jeśli wszyscy złapani to koniec
-            CatchedList.add("Marek");
-            CatchedList.add("Michal");
-            CatchedList.add("Olek");
-            CatchedList.add("Ania");
+            GetCatched lista_zlapanych = new GetCatched(CatchedList, nGameID);
+            try {
+                lista_zlapanych.execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            CatchedList = lista_zlapanych.getList();
 
-            ToCatchList.add("Konrad");
-            ToCatchList.add("Stasiu");
-            ToCatchList.add("Marcin");
-            CatchedList.add( "Login Gracza" );
+
+            GetToCatch lista_do_zlapania = new GetToCatch(ToCatchList, nGameID);
+            try {
+                lista_do_zlapania.execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            ToCatchList = lista_do_zlapania.getList();
+
             CatchedAdapter.notifyDataSetChanged();
-
-            ToCatchList.add( "Login Gracza" );
             ToCatchAdapter.notifyDataSetChanged();
 
             if (CatchedList.isEmpty()){
