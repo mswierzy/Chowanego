@@ -2,6 +2,7 @@ package com.example.markus_swierzy.chowanego;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -45,7 +48,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private String strLogin = "";
     private String strHiddenLogin = "";
     private int nLoginID = -1;
-    private int nHiddenLoginID = -1;
+    private int nHiddenLoginID = 1;
     private String strGameName = "";
     int nHiddenLoginPosition = 1;
     private long endSearchTime=-1L;
@@ -91,6 +94,18 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private float currentDegree = 0f;
     private SensorManager mSensorManager;
 
+    /*
+        Zmienne aktualnej pozycji
+     */
+    private double Latitude = CHMainMenu.latitude;
+    private double Longitude = CHMainMenu.longitude;
+
+    /*
+        Zmienne pozycji ukrywajacego sie
+     */
+    double latitude_ukrywajacego = 0d;
+    double longitude_ukrywajacego = 0d;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +123,10 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         strLogin = getIntent().getStringExtra("Login");
         nLoginID = getIntent().getIntExtra("LoginID",-1);
         strHiddenLogin = getIntent().getStringExtra("HiddenLogin");
-        nHiddenLoginID = getIntent().getIntExtra("HiddenLoginID",-1);
+        nHiddenLoginID = getIntent().getIntExtra("HiddenLoginID",1);
         endSearchTime = getIntent().getLongExtra("endSearchTime",-1);
+        latitude_ukrywajacego = getIntent().getDoubleExtra("latitude_ukrywajacego",0);
+        longitude_ukrywajacego = getIntent().getDoubleExtra("longitude_ukrywajacego", 0);
 
         txtGameName.setText(strGameName);
         txtLogin.setText(strLogin);
@@ -122,18 +139,26 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
             SearchTime = 0;
         }
 
-//TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
-        //SearchTime = 45000L;
-
         startTime = SystemClock.uptimeMillis();
-        customHandler.postDelayed(Count, 0);
-        customHandler.postDelayed(ChangeColor, 0);
+        customHandler.postDelayed(Count, 500); // tmp 500. bylo 0
+        customHandler.postDelayed(ChangeColor, 500); //jw.
 
-//TODO: Uzupełnij liste osobami biorącymi udział w grze
-        ListItems.add(new UserInfo("Adam", 13.5, 1));
-        ListItems.add(new UserInfo("Kasia", 18.5, 2));
-        ListItems.add(new UserInfo("Michal", 19.5, 3));
-        ListItems.add(new UserInfo("Trauta", 28.5, 4));
+
+        GetPlayers players = new GetPlayers(ListItems, nGameID, Latitude, Longitude);
+        try {
+            players.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        ListItems = players.getList();
+
+
+        latitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLatitude;
+        longitude_ukrywajacego = ListItems.get(nHiddenLoginPosition).dblLongitude;
+
 
         customHandler.postDelayed(StartNewActivity, SearchTime);
         /*
@@ -188,6 +213,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private void selectItemFromDrawer(int position) {
         strHiddenLogin = ListItems.get(position).strLogin;
         nHiddenLoginID = ListItems.get(position).nUserID;
+        latitude_ukrywajacego = ListItems.get(position).dblLatitude;
+        longitude_ukrywajacego = ListItems.get(position).dblLongitude;
         nHiddenLoginPosition = position;
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
@@ -198,6 +225,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         create.putExtra("Login", strLogin);
         create.putExtra("HiddenLogin", strHiddenLogin);
         create.putExtra("HiddenLoginID", nHiddenLoginID);
+        create.putExtra("endSearchTime", endSearchTime);
+        create.putExtra("latitude_ukrywajacego", latitude_ukrywajacego);
+        create.putExtra("longitude_ukrywajacego", longitude_ukrywajacego);
         GameSearcher.this.startActivity(create);
         GameSearcher.this.finish();
     }
@@ -245,7 +275,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
     public void onComplete() {
 //TODO: Złapano gracza strHiddenLogin -> usunięcie z listy ListItems - gotowe -> zostawiam jako wzor!
-//TODO: Dodaj informacje o zlapaniu do bazy - SPRAWDZIC POZNIEJ CZY DZIALA!
 
         int nIDGraczaKtoregoSzukam = ListItems.get(nHiddenLoginPosition).nUserID;
 
@@ -354,6 +383,19 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
         public void run() {
             dblPreviousDistance = dblDistance;
+
+            // ustalenie aktualnej lokalizacji szukajacego
+            Location actLocation = new Location("");
+            actLocation.setLatitude(Latitude);
+            actLocation.setLongitude(Longitude);
+
+            // ustalenie lokalizacji ukrywajacego sie, na podstawie danych pobranych z bazy
+            Location playerLocation = new Location("");
+            playerLocation.setLatitude(latitude_ukrywajacego);
+            playerLocation.setLongitude(longitude_ukrywajacego);
+
+            dblDistance =  playerLocation.distanceTo(actLocation);
+
 //TODO: Obliczenie zmiany dystansu do ukrywajacego się i zapis do dblDistance
             ChangeCompassBackgroundColor();
             customHandler.postDelayed(this, 1000);

@@ -8,10 +8,14 @@ public class UserInfo {
     String strLogin;
     double dblDistance;
     int nUserID;
+    double dblLatitude;
+    double dblLongitude;
 
-    public UserInfo(String strLogin, double dblDistance, int nUserID) {
+    public UserInfo(String strLogin, double dblDistance, int nUserID, double dblLatitude, double dblLongitude) {
         this.strLogin = strLogin;
         this.dblDistance = dblDistance;
         this.nUserID = nUserID;
+        this.dblLatitude = dblLatitude;
+        this.dblLongitude = dblLongitude;
     }
 }

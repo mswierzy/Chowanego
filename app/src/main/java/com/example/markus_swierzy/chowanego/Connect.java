@@ -111,7 +111,7 @@ public class Connect extends AppCompatActivity {
                 }
 
             }
-        });
+    });
 // TODO: Wiktor - Ja bym to chyba wywalil z wyszukiwaniem, bo niepotrzebne nam to jest raczej a dodatkowo zajmuje troche miejsca na tym ekranie z lista i przyciskiem play
 //        search.setOnClickListener(new View.OnClickListener() {
 //            @Override
