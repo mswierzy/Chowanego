@@ -54,6 +54,12 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private long endSearchTime=-1L;
 
     /*
+        Zmienne kompasu
+     */
+
+    private float fBearingDeg=0.0f; // w stopniach
+
+    /*
         Zmienne zmiany koloru cieplo-zimno
      */
     private double dblDistance = 0.0; // w metrach
@@ -167,9 +173,12 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         }
 
         customHandler.postDelayed(StartNewActivity, SearchTime);
+
+
         /*
             Kompas
          */
+
         image = (ImageView) findViewById(R.id.imageGameSearcherViewCompass);
         timerValue = (TextView) findViewById(R.id.tvGameSearcherTimer);
 
@@ -409,6 +418,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private Runnable ChangeColor = new Runnable() {
 
         public void run() {
+            // tutaj dodatkowo wykonuje obliczenia do strzalki nawigujacej
             dblPreviousDistance = dblDistance;
 
             Latitude = CHMainMenu.latitude;
@@ -425,10 +435,12 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
             playerLocation.setLongitude(longitude_ukrywajacego);
 
             dblDistance =  playerLocation.distanceTo(actLocation);
+            fBearingDeg = actLocation.bearingTo(playerLocation);
 
             ChangeCompassBackgroundColor();
             tvDistance.setText(String.valueOf((int) Math.round(dblDistance)));
             tvDistanceDifference.setText(String.valueOf((int) Math.round(dblPreviousDistance-dblDistance)));
+            //tvDistanceDifference.setText(String.valueOf((int) Math.round(fBearingDeg))); // wyswietlanie bearingto tylko do testu czy w dobra strone mam to ustawione (czy dobra kolejnosc loc1.bearingto(loc2)
             customHandler.postDelayed(this, 5000);
         }
 
@@ -457,7 +469,10 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
 
         // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[0]);
+
+
+
+        float degree = Math.round(event.values[0]) - fBearingDeg;
 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
