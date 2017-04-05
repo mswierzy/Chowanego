@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -50,6 +51,14 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private long endSearchTime=-1L;
 
     /*
+        Zmienne zmiany koloru cieplo-zimno
+     */
+    private double dblDistance = 0.0; // w metrach
+    private double dblPreviousDistance = 0.0;
+    private double dblMaxDistance = 50.0;
+
+    RelativeLayout DistanceRectangle;
+    /*
         Zmienne panelu Drawer
      */
     ListView mDrawerList;
@@ -89,6 +98,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
         Button btnExit = (Button) findViewById(R.id.btnGameSearcherQuit);
         Button catched = (Button) findViewById(R.id.btnGameSearcherCatched);
+        DistanceRectangle = (RelativeLayout) findViewById(R.id.rlGameSearcherCompassBackground);
         TextView txtGameName = (TextView) findViewById(R.id.tvGameSearcherGameName);
         TextView txtLogin = (TextView) findViewById(R.id.txtGameSearcherLogin);
         TextView txtHiddenLogin = (TextView) findViewById(R.id.tvGameSearcherPlayerToFind);
@@ -113,10 +123,11 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         }
 
 //TODO: Pobierz czas zakończenia szukania z bazy danych i wylicz na jego podstawie ilość milisekund do jego końca i potem zapisz do zmiennej SearchTime
-        //SearchTime = 15000L;
+        //SearchTime = 45000L;
 
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(Count, 0);
+        customHandler.postDelayed(ChangeColor, 0);
 
 //TODO: Uzupełnij liste osobami biorącymi udział w grze
         ListItems.add(new UserInfo("Adam", 13.5, 1));
@@ -180,6 +191,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         nHiddenLoginPosition = position;
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
+        customHandler.removeCallbacks(ChangeColor);
         Intent create = new Intent(GameSearcher.this, GameSearcher.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -188,6 +200,40 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         create.putExtra("HiddenLoginID", nHiddenLoginID);
         GameSearcher.this.startActivity(create);
         GameSearcher.this.finish();
+    }
+
+    private void ChangeCompassBackgroundColor(){
+        float hsv[] = {0, 0 ,0};
+        float flHue = 0;
+        float flSaturation = 0;
+        double dblDistanceChange = 0.0;
+
+        dblDistanceChange = this.dblPreviousDistance - this.dblDistance;
+
+        if (dblDistanceChange < 0) {
+            flHue = 255;
+        }else flHue = 0;
+
+        flSaturation = this.GetSaturation(dblDistanceChange, this.dblMaxDistance);
+        hsv[0] = flHue;
+        hsv[1] = flSaturation;
+        hsv[2] = 1;
+
+        DistanceRectangle.setBackgroundColor(Color.HSVToColor(hsv));
+    }
+
+    private float GetSaturation(double Distance, double Max){
+        float flSaturation = 0;
+        double absDistance = Math.abs(Distance);
+        if (absDistance > Max){
+            flSaturation = 1;
+        }else{
+            flSaturation = (1/(float)Max)*(float)absDistance;
+        }
+
+        if (flSaturation > 1) flSaturation = 1;
+
+        return flSaturation;
     }
 
     private void toast( String text )
@@ -238,6 +284,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 //TODO: Wylogowanie użytkownika z bazy danych graczy i usunięcie go z listy ListItems
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
+        customHandler.removeCallbacks(ChangeColor);
         Intent create = new Intent(GameSearcher.this, CHMainMenu.class);
         GameSearcher.this.startActivity(create);
         GameSearcher.this.finish();
@@ -245,11 +292,11 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     }
 
     public void onCancel() {
-
     }
 
     public void onOk(){
         customHandler.removeCallbacks(Count);
+        customHandler.removeCallbacks(ChangeColor);
         Intent create = new Intent(GameSearcher.this, RecreateGame.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -302,6 +349,18 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         }
 
     };
+
+    private Runnable ChangeColor = new Runnable() {
+
+        public void run() {
+            dblPreviousDistance = dblDistance;
+//TODO: Obliczenie zmiany dystansu do ukrywajacego się i zapis do dblDistance
+            ChangeCompassBackgroundColor();
+            customHandler.postDelayed(this, 1000);
+        }
+
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -310,6 +369,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
     }
+
+
 
     @Override
     protected void onPause() {
