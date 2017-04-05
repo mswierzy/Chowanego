@@ -390,6 +390,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         public void run() {
             dblPreviousDistance = dblDistance;
 
+            Latitude = CHMainMenu.latitude;
+            Longitude = CHMainMenu.longitude;
+
             // ustalenie aktualnej lokalizacji szukajacego
             Location actLocation = new Location("");
             actLocation.setLatitude(Latitude);
