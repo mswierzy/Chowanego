@@ -76,7 +76,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private ImageView image;
     private float currentDegree = 0f;
     private SensorManager mSensorManager;
-    TextView tvHeading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +117,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
          */
         image = (ImageView) findViewById(R.id.imageGameSearcherViewCompass);
         timerValue = (TextView) findViewById(R.id.tvGameSearcherTimer);
-
-        // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.tvGameSearcherHeading);
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -286,8 +282,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
         // get the angle around the z-axis rotated
         float degree = Math.round(event.values[0]);
-
-        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(

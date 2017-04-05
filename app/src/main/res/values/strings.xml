@@ -48,4 +48,6 @@
     <string name="txtSetLocation">Set Location</string>
     <string name="txtNewLocation">New Location</string>
     <string name="txtStartSearching">Start searching</string>
+    <string name="txtChoose">Choose</string>
+    <string name="txtChoosePlayerToFind">Choose player to find</string>
 </resources>

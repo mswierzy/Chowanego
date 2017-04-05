@@ -49,4 +49,6 @@
     <string name="txtSetLocation">Ustaw pozycję</string>
     <string name="txtNewLocation">Nowa lokalizacja</string>
     <string name="txtStartSearching">Zacznij szukać</string>
+    <string name="txtChoose">Wybierz</string>
+    <string name="txtChoosePlayerToFind">Wybierz zawodnika do znalezienia</string>
 </resources>
