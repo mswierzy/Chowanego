@@ -4,13 +4,17 @@ OGOLNE:
 
 moze warto poprawic (ale to juz jako pierdola na sam koniec) to zeby nie potwierdzac loginu, hasla, nazwy gry przyciskami,
 tylko zeby sie to potwierdzalo przy nacisnieciu stworz gre i tak samo w ekranie dolaczenia do gry
---> ekran dodawania nowej gry i ekran dodawania ukrywajacego sie.
+--> ekran dodawania nowej gry i ekran dodawania ukrywajacego sie. -> Markus
+
+przekierowanie po zakonczeniu gry automatycznie do menu glownego -> Markus
 
 GameSearcher.java:
 
-Poprawic kolorki - przy malych predkosciach wieksza zmiana.
+Poprawic kolorki - przy malych predkosciach wieksza zmiana. -> Markus
 
 WAITING:
 
-sprawdzic jeszcze raz tylko ile tego czasu tutaj odmierza, czy faktycznie ten ktory pozostal do konca gry czy jakis inny gdzies jest nadpisany jeszcze
+sprawdzic jeszcze raz tylko ile tego czasu tutaj odmierza, czy faktycznie ten ktory pozostal do konca gry czy jakis inny gdzies jest nadpisany jeszcze -> Wiktor
+
+poprawic nazwe szukajacego - caly czas jest Temp Searcher -> Wiktor
 
