@@ -76,6 +76,10 @@ public class Create extends AppCompatActivity {
                     nSearchTime = Integer.parseInt(tmpSearch);
                 }
 
+                strGameName = edGameName.getText().toString();
+                strPassword = edPassword.getText().toString();
+                strLogin = edLogin.getText().toString();
+
                 // Dolacz do gry!!!!
                 if(strGameName.isEmpty()){
                     bOk = false;
