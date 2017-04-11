@@ -8,42 +8,16 @@
     tools:context="com.example.markus_swierzy.chowanego.MainActivity">
     <TableLayout>
         <TableRow>
-            <Button
-                android:text="@string/txtLogin"
-                android:id="@+id/btnConnectLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:inputType="textPersonName"
                 android:hint="Login"
+                android:layout_gravity="center"
                 android:ems="10"
                 android:id="@+id/edConnectLogin" />
         </TableRow>
     </TableLayout>
-    <!-- tymczasowo zakomentowalem (wiktor) - wydaje mi sie ze do wywalenia
-    <TableLayout>
-        <TableRow>
-            <Button
-                android:text="@string/txtSearch"
-                android:id="@+id/btnConnectSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Game"
-                android:ems="10"
-                android:id="@+id/edConnectSearch" />
-        </TableRow>
-    </TableLayout>
-    -->
     <LinearLayout android:weightSum="1">
         <ListView
             android:id="@+id/list"

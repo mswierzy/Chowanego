@@ -64,7 +64,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
      */
     private double dblDistance = 0.0; // w metrach
     private double dblPreviousDistance = 0.0;
-    private double dblMaxDistance = 50.0;
+    private double dblMaxDistance = 25.0;
     TextView tvDistance;
     TextView tvDistanceDifference;
 

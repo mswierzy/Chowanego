@@ -36,8 +36,6 @@ import java.util.concurrent.ExecutionException;
 public class Connect extends AppCompatActivity {
 
     String strLogin = "";
-    String strOccupiedLogin = "Adam";
-    //String strSearch = "";
     String strGameName = "";
     List<String> data = new ArrayList<String>();
     List<GameInfo> GameInfoList = new ArrayList<GameInfo>();
@@ -59,12 +57,9 @@ public class Connect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
 
-        Button login = (Button) findViewById(R.id.btnConnectLogin);
-        //Button search = (Button) findViewById(R.id.btnConnectSearch);
         Button play = (Button) findViewById(R.id.btnConnectPlay);
 
         final EditText txtLogin = (EditText)findViewById(R.id.edConnectLogin);
-        //final EditText txtSearch = (EditText)findViewById(R.id.edConnectSearch);
 
         GetAllGames games = new GetAllGames(GameInfoList);
         try {
@@ -87,31 +82,10 @@ public class Connect extends AppCompatActivity {
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter( adapter );
 
-        login.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
-        //search.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
         play.setHapticFeedbackEnabled(CHEngine.HAPTIC_BUTTON_FEEDBACK);
 
         res = getResources();
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                strLogin = txtLogin.getText().toString();
-                if(strLogin.equals("")){
-                    toast(res.getString(R.string.txtNoLoginTyped));
-                }else{
-                    if (strLogin.equals(strOccupiedLogin)) {
-                        toast(res.getString(R.string.txtLogginOccupied));
-                        txtLogin.setText("");
-                        strLogin = "";
-                    }else{
-                        String strToast = res.getString(R.string.txtLoginSet) + ": " + strLogin;
-                        toast(strToast);
-                    }
-                }
-
-            }
-    });
 // TODO: Wiktor - Ja bym to chyba wywalil z wyszukiwaniem, bo niepotrzebne nam to jest raczej a dodatkowo zajmuje troche miejsca na tym ekranie z lista i przyciskiem play
 //        search.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -126,25 +100,35 @@ public class Connect extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean bOk = true;
+                String strToastMessage = "";
+                strLogin = txtLogin.getText().toString();
+
+                if(strLogin.equals("")){
+                    strToastMessage = getString(R.string.txtNoLoginTyped) + "\n";
+                    bOk = false;
+                }
                 if (nSelected < 0){
-                    toast(res.getString(R.string.txtNoGameSelected));
-                } else if(strLogin.equals("")){
-                    toast(res.getString(R.string.txtNoLoginTyped));
-                }else{
+                    strToastMessage += res.getString(R.string.txtNoGameSelected) + "\n";
+                    bOk = false;
+                }
 
-                        FragmentManager fm = getFragmentManager();
-                        ConnectDialogPassword dialogFragment = new ConnectDialogPassword();
+                if (bOk){
+                    FragmentManager fm = getFragmentManager();
+                    ConnectDialogPassword dialogFragment = new ConnectDialogPassword();
 
-                        Bundle args = new Bundle();
-                        args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
-                        args.putString("GameName", GameInfoList.get(nSelected).getGameName());
-                        args.putString("Login", strLogin);
-                        args.putString("Password", GameInfoList.get(nSelected).getPassword());
-                        args.putLong("endHideTime", GameInfoList.get(nSelected).getEndHideTime());
-                        args.putLong("endSearchTime", GameInfoList.get(nSelected).getEndSearchTime());
-                        dialogFragment.setArguments(args);
+                    Bundle args = new Bundle();
+                    args.putInt("GameID", GameInfoList.get(nSelected).getGameID());
+                    args.putString("GameName", GameInfoList.get(nSelected).getGameName());
+                    args.putString("Login", strLogin);
+                    args.putString("Password", GameInfoList.get(nSelected).getPassword());
+                    args.putLong("endHideTime", GameInfoList.get(nSelected).getEndHideTime());
+                    args.putLong("endSearchTime", GameInfoList.get(nSelected).getEndSearchTime());
+                    dialogFragment.setArguments(args);
 
-                        dialogFragment.show(fm, "Connect");
+                    dialogFragment.show(fm, "Connect");
+                }else {
+                    toast(strToastMessage);
                 }
             }
         });

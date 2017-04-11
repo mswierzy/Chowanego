@@ -23,10 +23,11 @@ public class Create extends AppCompatActivity {
     public String strOccupiedLogin = "";
 
     Button btnCreate;
+/*
     Button btnGameName;
     Button btnPassword;
     Button btnLogin;
-
+*/
     EditText edGameName;
     EditText edPassword;
     EditText edLogin;
@@ -46,10 +47,11 @@ public class Create extends AppCompatActivity {
         res = getResources();
 
         btnCreate = (Button) findViewById(R.id.btnCreate);
+ /*
         btnGameName = (Button) findViewById(R.id.btnCreateGameName);
         btnPassword = (Button) findViewById(R.id.btnCreatePassword);
         btnLogin = (Button) findViewById(R.id.btnCreateLogin);
-
+*/
         edGameName = (EditText) findViewById(R.id.edCreateGameName);
         edPassword = (EditText) findViewById(R.id.edCreatePassword);
         edLogin = (EditText) findViewById(R.id.edCreateLogin);
@@ -64,6 +66,8 @@ public class Create extends AppCompatActivity {
             public void onClick(View v) {
                 String tmpHide = edHideTime.getText().toString();
                 String tmpSearch = edSearchTime.getText().toString();
+                boolean bOk = true;
+                String strToastMessage = "";
 
                 if(!tmpHide.isEmpty()){
                     nHideTime = Integer.parseInt(tmpHide);
@@ -74,10 +78,14 @@ public class Create extends AppCompatActivity {
 
                 // Dolacz do gry!!!!
                 if(strGameName.isEmpty()){
-                    toast(res.getString(R.string.txtNoGameNameTyped));
+                    bOk = false;
+                    strToastMessage = getString(R.string.txtNoGameNameTyped) + "\n";
                 }else if(strLogin.isEmpty()){
-                    toast(res.getString(R.string.txtNoLoginTyped));
-                }else{
+                    bOk = false;
+                    strToastMessage += res.getString(R.string.txtNoLoginTyped) + "\n";
+                }
+
+                if(bOk){
                     FragmentManager fm = getFragmentManager();
                     CreateDialog dialogFragment = new CreateDialog ();
 
@@ -87,16 +95,18 @@ public class Create extends AppCompatActivity {
                     args.putString("Password", strPassword);
                     args.putInt("SearchTime", nSearchTime);
                     args.putInt("HideTime", nHideTime);
-                 //   args.putBoolean("IsPassword", bIsPassword);
+                    //   args.putBoolean("IsPassword", bIsPassword);
                     args.putDouble("Latitude", nLatitude);
                     args.putDouble("Longitude", nLongitude);
                     dialogFragment.setArguments(args);
 
                     dialogFragment.show(fm, "Create");
+                } else{
+                    toast(strToastMessage);
                 }
             }
         });
-
+/*
         btnGameName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +160,7 @@ public class Create extends AppCompatActivity {
                 }
             }
         });
+*/
     }
 
     @Override
