@@ -86,17 +86,6 @@ public class Connect extends AppCompatActivity {
 
         res = getResources();
 
-// TODO: Wiktor - Ja bym to chyba wywalil z wyszukiwaniem, bo niepotrzebne nam to jest raczej a dodatkowo zajmuje troche miejsca na tym ekranie z lista i przyciskiem play
-//        search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                strSearch = txtSearch.getText().toString();
-//                GameInfoList.clear();
-//                GameInfoList.add( new GameInfo(strSearch, 6, 0, true, "1234", 4) );
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
-
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
