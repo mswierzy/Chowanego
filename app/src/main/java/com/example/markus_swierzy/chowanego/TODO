@@ -9,3 +9,7 @@ usuniecie gry po wyjsciu z aplikacji szukajacego - dopisac tylko if'a w pliku de
 tzn usuwajac gracza pobieram id gry do ktorej nalezy i sprawdzam role gracza,
 jezeli rola gracza to szukajacy to wtedy usuwam z bazy gre o id ktore pobralem, w przeciwnym przypadku
 usuwam tylko gracza (ukrywajacego sie)
+
+
+WIKTOR:
+poprawic u szukajacego liste, zawsze nawiguje do jednej osoby (pewnie jakies zle id do bazy jest przesylane)
