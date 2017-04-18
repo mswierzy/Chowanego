@@ -141,6 +141,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         nLoginID = getIntent().getIntExtra("LoginID",-1);
         strHiddenLogin = getIntent().getStringExtra("HiddenLogin");
         nHiddenLoginID = getIntent().getIntExtra("HiddenLoginID",1);
+        nHiddenLoginPosition = getIntent().getIntExtra("HiddenLoginPosition", 1);
         endSearchTime = getIntent().getLongExtra("endSearchTime",-1);
         latitude_ukrywajacego = getIntent().getDoubleExtra("latitude_ukrywajacego",0);
         longitude_ukrywajacego = getIntent().getDoubleExtra("longitude_ukrywajacego", 0);
@@ -157,10 +158,6 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         }
 
         startTime = SystemClock.uptimeMillis();
-        customHandler.postDelayed(Count, 500); // tmp 500. bylo 0
-        customHandler.postDelayed(ChangeColor, 500); //jw.
-        customHandler.postDelayed(ChangeCompassVisibility, CompassVisibleTime);
-        customHandler.postDelayed(RefreshList, 1000);
 
 
         GetPlayers players = new GetPlayers(ListItems, nGameID, Latitude, Longitude);
@@ -181,7 +178,10 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         }
 
         customHandler.postDelayed(StartNewActivity, SearchTime);
-
+        customHandler.postDelayed(Count, 0); // tmp 500. bylo 0
+        customHandler.postDelayed(ChangeColor, 0); //jw.
+        customHandler.postDelayed(ChangeCompassVisibility, CompassVisibleTime);
+        customHandler.postDelayed(RefreshList, 1000);
 
         /*
             Kompas
@@ -248,8 +248,10 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
         create.putExtra("Login", strLogin);
+        create.putExtra("LoginID", nLoginID);
         create.putExtra("HiddenLogin", strHiddenLogin);
         create.putExtra("HiddenLoginID", nHiddenLoginID);
+        create.putExtra("HiddenLoginPosition", nHiddenLoginPosition);
         create.putExtra("endSearchTime", endSearchTime);
         create.putExtra("latitude_ukrywajacego", latitude_ukrywajacego);
         create.putExtra("longitude_ukrywajacego", longitude_ukrywajacego);
@@ -299,11 +301,11 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     }
 
     public void onComplete() {
-        int nIDGraczaKtoregoSzukam = ListItems.get(nHiddenLoginPosition).nUserID;
+        //int nIDGraczaKtoregoSzukam = ListItems.get(nHiddenLoginPosition).nUserID;
 
         // UPDATE W BAZIE POLA O ZLAPANIU - UPDATE POCHODZI OD SZUKAJACEGO
-        MyTaskParams_updateZlapany args = new MyTaskParams_updateZlapany(nIDGraczaKtoregoSzukam);
-        UpdateZlapanyOdUkrywajacego updZlapOdSzuk = new UpdateZlapanyOdUkrywajacego(nIDGraczaKtoregoSzukam);
+        MyTaskParams_updateZlapany args = new MyTaskParams_updateZlapany(nHiddenLoginID);
+        UpdateZlapanyOdSzukajacego updZlapOdSzuk = new UpdateZlapanyOdSzukajacego(nHiddenLoginID);
 
         try {
             updZlapOdSzuk.execute(args).get();
@@ -434,7 +436,16 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private Runnable RefreshList = new Runnable() {
 
         public void run() {
-//TODO: odśwież listę poszukiwanych
+            ListItems.clear();
+            GetPlayers players = new GetPlayers(ListItems, nGameID, Latitude, Longitude);
+            try {
+                players.execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            ListItems = players.getList();
             customHandler.postDelayed(this, 1000);
         }
 
@@ -472,16 +483,18 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
             // ustalenie lokalizacji ukrywajacego sie, na podstawie danych pobranych z bazy
             Location playerLocation = new Location("");
-            playerLocation.setLatitude(latitude_ukrywajacego);
-            playerLocation.setLongitude(longitude_ukrywajacego);
+            playerLocation.setLatitude(ListItems.get(nHiddenLoginPosition).dblLatitude);
+            playerLocation.setLongitude(ListItems.get(nHiddenLoginPosition).dblLongitude);
+//            playerLocation.setLatitude(latitude_ukrywajacego);
+//            playerLocation.setLongitude(longitude_ukrywajacego);
 
-            dblDistance =  playerLocation.distanceTo(actLocation);
+            dblDistance = playerLocation.distanceTo(actLocation);
             fBearingDeg = actLocation.bearingTo(playerLocation);
 
             ChangeCompassBackgroundColor();
-            tvDistance.setText(String.valueOf((int) Math.round(dblDistance)));
-            tvDistanceDifference.setText(String.valueOf((int) Math.round(dblPreviousDistance-dblDistance)));
-            //tvDistanceDifference.setText(String.valueOf((int) Math.round(fBearingDeg))); // wyswietlanie bearingto tylko do testu czy w dobra strone mam to ustawione (czy dobra kolejnosc loc1.bearingto(loc2)
+            //tvDistance.setText(String.valueOf((int) Math.round(dblDistance)));
+            //tvDistanceDifference.setText(String.valueOf((int) Math.round(dblPreviousDistance-dblDistance)));
+            tvDistanceDifference.setText(String.valueOf((int) Math.round(fBearingDeg))); // wyswietlanie bearingto tylko do testu czy w dobra strone mam to ustawione (czy dobra kolejnosc loc1.bearingto(loc2)
             customHandler.postDelayed(this, 5000);
         }
 
