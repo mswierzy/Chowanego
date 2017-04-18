@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -159,6 +160,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         customHandler.postDelayed(Count, 500); // tmp 500. bylo 0
         customHandler.postDelayed(ChangeColor, 500); //jw.
         customHandler.postDelayed(ChangeCompassVisibility, CompassVisibleTime);
+        customHandler.postDelayed(RefreshList, 1000);
 
 
         GetPlayers players = new GetPlayers(ListItems, nGameID, Latitude, Longitude);
@@ -240,6 +242,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
         customHandler.removeCallbacks(ChangeColor);
+        customHandler.removeCallbacks(ChangeCompassVisibility);
+        customHandler.removeCallbacks(RefreshList);
         Intent create = new Intent(GameSearcher.this, GameSearcher.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -356,6 +360,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(StartNewActivity);
         customHandler.removeCallbacks(ChangeColor);
+        customHandler.removeCallbacks(ChangeCompassVisibility);
+        customHandler.removeCallbacks(RefreshList);
         Intent create = new Intent(GameSearcher.this, CHMainMenu.class);
         GameSearcher.this.startActivity(create);
         GameSearcher.this.finish();
@@ -368,6 +374,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     public void onOk(){
         customHandler.removeCallbacks(Count);
         customHandler.removeCallbacks(ChangeColor);
+        customHandler.removeCallbacks(ChangeCompassVisibility);
+        customHandler.removeCallbacks(RefreshList);
         Intent create = new Intent(GameSearcher.this, RecreateGame.class);
         create.putExtra("GameID", nGameID);
         create.putExtra("GameName", strGameName);
@@ -417,6 +425,15 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
         public void run() {
             OpenRecreateGameActivity();
+        }
+
+    };
+
+    private Runnable RefreshList = new Runnable() {
+
+        public void run() {
+//TODO: odśwież listę poszukiwanych
+            customHandler.postDelayed(this, 1000);
         }
 
     };
