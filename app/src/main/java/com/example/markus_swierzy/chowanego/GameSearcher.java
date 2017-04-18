@@ -335,7 +335,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     public void onExit() {
 
         // usuniecie z listy
-        ListItems.remove(nHiddenLoginPosition);
+        if (!ListItems.isEmpty()){
+            ListItems.remove(nHiddenLoginPosition);
+        }
 
         // wylogowanie z bazy
         MyTaskParams_deletePlayer args = new MyTaskParams_deletePlayer(nLoginID);
