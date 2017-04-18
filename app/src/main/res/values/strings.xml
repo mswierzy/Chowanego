@@ -50,4 +50,8 @@
     <string name="txtStartSearching">Start searching</string>
     <string name="txtChoose">Choose</string>
     <string name="txtChoosePlayerToFind">Choose player to find</string>
+    <string name="txtInfoHeader">Informations about game</string>
+    <string name="txtInfoLine1">Choose Create Game for create a game and be a searcher</string>
+    <string name="txtInfoLine2">Choose Connect to connect to a game and get hide</string>
+    <string name="txtInfoLine3">Game Created By:</string>
 </resources>

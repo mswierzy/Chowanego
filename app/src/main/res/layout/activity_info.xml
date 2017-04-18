@@ -6,51 +6,57 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.markus_swierzy.chowanego.MainActivity">
-    <TableLayout>
-        <TableRow>
-            <Button
-                android:text="@string/txtLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="Login"
-                android:ems="10"
-                android:id="@+id/edConnectLogin" />
-        </TableRow>
-    </TableLayout>
-    <TableLayout>
-        <TableRow>
-            <Button
-                android:text="@string/txtSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="Game"
-                android:ems="10"
-                android:id="@+id/edConnectGame" />
-        </TableRow>
-    </TableLayout>
-   <LinearLayout android:weightSum="1">
-        <ListView
-            android:layout_height="300sp"
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_weight="1">
-        </ListView>
-   </LinearLayout>
-        <Button
-            android:text="@string/txtSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txtInfoHeader"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/txtInfoLine1"
+        android:textSize="18sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/txtInfoLine2"
+        android:textSize="18sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/txtInfoLine3"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Bodziony Marcin"
+        android:textSize="18sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Smolnik Mateusz"
+        android:textSize="18sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Swierzy Markus"
+        android:textSize="18sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Widera Wiktor"
+        android:textSize="18sp"
+        android:gravity="center"/>
 </TableLayout>

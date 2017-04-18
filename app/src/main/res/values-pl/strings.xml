@@ -51,4 +51,8 @@
     <string name="txtStartSearching">Zacznij szukać</string>
     <string name="txtChoose">Wybierz</string>
     <string name="txtChoosePlayerToFind">Wybierz zawodnika do znalezienia</string>
+    <string name="txtInfoHeader">Informacje o grze</string>
+    <string name="txtInfoLine1">Wybierz Utwórz Grę żeby stworzyć grę i być szukającym</string>
+    <string name="txtInfoLine2">Wybierz Dołącz żeby dołączyć  do gry i idź się ukryć</string>
+    <string name="txtInfoLine3">Gra stworzona przez:</string>
 </resources>

@@ -101,6 +101,9 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
     private ImageView image;
     private float currentDegree = 0f;
     private SensorManager mSensorManager;
+    private boolean bCompassHide = false;
+    private long CompassHideTime = 5000;
+    private long CompassVisibleTime = 1000;
 
     /*
         Zmienne aktualnej pozycji
@@ -125,6 +128,8 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         TextView txtGameName = (TextView) findViewById(R.id.tvGameSearcherGameName);
         TextView txtLogin = (TextView) findViewById(R.id.txtGameSearcherLogin);
         TextView txtHiddenLogin = (TextView) findViewById(R.id.tvGameSearcherPlayerToFind);
+        image = (ImageView) findViewById(R.id.imageGameSearcherViewCompass);
+        image.setAlpha(1F);
 
         tvDistance = (TextView) findViewById(R.id.tvGameSearcherDistance);
         tvDistanceDifference = (TextView) findViewById(R.id.tvGameSearcherDistanceDifference);
@@ -153,6 +158,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
         startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(Count, 500); // tmp 500. bylo 0
         customHandler.postDelayed(ChangeColor, 500); //jw.
+        customHandler.postDelayed(ChangeCompassVisibility, CompassVisibleTime);
 
 
         GetPlayers players = new GetPlayers(ListItems, nGameID, Latitude, Longitude);
@@ -179,7 +185,7 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
             Kompas
          */
 
-        image = (ImageView) findViewById(R.id.imageGameSearcherViewCompass);
+
         timerValue = (TextView) findViewById(R.id.tvGameSearcherTimer);
 
         // initialize your android device sensor capabilities
@@ -415,6 +421,22 @@ public class GameSearcher extends AppCompatActivity implements SensorEventListen
 
     };
 
+    private Runnable ChangeCompassVisibility = new Runnable() {
+
+        public void run() {
+            if (bCompassHide == true){
+                bCompassHide = false;
+                image.setAlpha(0F);
+                customHandler.postDelayed(this, CompassHideTime);
+            }else{
+                bCompassHide = true;
+                image.setAlpha(1F);
+                customHandler.postDelayed(this, CompassVisibleTime);
+            }
+
+        }
+
+    };
     private Runnable ChangeColor = new Runnable() {
 
         public void run() {

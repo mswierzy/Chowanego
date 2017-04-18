@@ -117,6 +117,7 @@
             android:layout_height="200dp">
 
             <ImageView
+                android:alpha="1.0"
                 android:id="@+id/imageGameSearcherViewCompass"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
